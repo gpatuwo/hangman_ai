@@ -54,18 +54,26 @@ at roughly 5.4 words/min
   - for each length list
   - for letter position
 - server-side js logic
-- split is a linear operation on the thing that we're splitting. but we know what's gonna come back so it's dependent on the lenght of the word
+- split is a linear operation on the thing that we're splitting. but we know what's gonna come back so it's dependent on the length of the word
 
-- time until you hit next repeat / how many words between the two points
---> start seeing pattern of this ratio. when this ratio hits XXX, bottom will get shorter and shorter also the numerator. ratio may be going down and up and the up and down (like parabola?), when turns corner it's good enough.
+freq-gen sequence:
+- word comes in, # of letters
+  - pre-gen freq list for length lists?
+- guess first letter (probs e)
+- parse response
+  - if yes,
+    - itr thru word, find position of letter/s
+    - narrow down words list to matches
+    - freq gen that list to guess next letter
+  - if no,
+    - then guess 2nd length list letter
 
-- keep track of how many words i see in between, time between seeing repeat words, what number is it stabilizing at? stop there
-- distrubition fuction
+hash builder:
+
+frequency generator:
+
 
 # TO DO
-- how to test runtime
-- how many tests do i need to run in order to be statistically significant?
-- isolate and analyze words that were missed
 - setInterval delay too much?
 
 ## Sequence
