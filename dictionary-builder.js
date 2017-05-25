@@ -38,29 +38,13 @@ function startGame() {
       console.log('gameId:', gameId);
       console.log('length:', wordLength);
 
-      // run feedLetters(gameId) here
+      url += `${gameId}/guesses`;
+      feedLetters(url);
     }
   );
 }
 
-function feedLetters() {
-  console.log('feedgameId:', "33af0955e68a");
-  let url = `http://int-sys.usr.space/hangman/games/33af0955e68a/guesses`;
-
-  console.log('--- starting letter feed ---');
-
-  // for (var i = 0; i < Letters.length; i++) {
-  //   let currentLetter = Letters[i];
-  //
-    // guessLetter(url, currentLetter);
-  // }
-
-
-}
-  let url = `http://int-sys.usr.space/hangman/games/d96fcd353710/guesses`;
-
-
-function guessLetter() {
+function feedLetters(url) {
   request.post({url: url, formData: {char: Letters.shift()}},
     function cb(error, response, body) {
       if (error) return console.log('error:', error);
@@ -70,8 +54,8 @@ function guessLetter() {
       console.log("letters now", Letters);
 
       if (data.status === 'inactive') {
+        // BREAKS OUT OF FOR LOOP! :D
         handleWord(data);
-        // BREAK OUT OF FOR LOOP!
       } else {
         console.log("making another post req");
         request.post({url: url, formData: {char: Letters.shift()}}, cb);
@@ -108,8 +92,4 @@ function saveWord(word){
   });
 }
 
-// feedLetters();
-guessLetter();
-
-// saveWord("morsal,");
-// saveWord("infern,");
+startGame();
