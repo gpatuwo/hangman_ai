@@ -12,3 +12,8 @@ ganosis
 bumbaze
 techous
 mockery
+gulonic
+polacre
+nymphal
+castral
+dulotic
