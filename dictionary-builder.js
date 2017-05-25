@@ -35,10 +35,11 @@ function startGame() {
       let data = JSON.parse(body);
       gameId = data.gameId;
       wordLength = data.word.length;
-      console.log('gameId:', gameId);
-      console.log('length:', wordLength);
+      // console.log('gameId:', gameId);
+      // console.log('length:', wordLength);
 
       url += `${gameId}/guesses`;
+      console.log("<------ starting feedLetters ------>");
       feedLetters(url);
     }
   );
@@ -65,7 +66,7 @@ function feedLetters(url) {
 }
 
 function handleWord(data) {
-  console.log('--- starting saveWord ---');
+  console.log("<------ starting handleWord ------>");
   let firstMsgWord = data.msg.split(" ").shift();
   let lastMsgWord = data.msg.split(" ").pop();
 
@@ -83,6 +84,7 @@ function saveWord(word){
     if (err) console.log(err);
     if (data.indexOf(word) >= 0) {
       console.log("you've seen this word before!");
+      fs.appendFile('./dictionary/seen-words.txt', word);
     } else {
       fs.appendFile(path, word, (err2) => {
         if (err2) console.log(err2);
