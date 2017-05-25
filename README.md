@@ -1,9 +1,6 @@
 # Hangman Solver
------
-This AI hangman solver is based on the assumption that the API only provides *valid english* words.
 
------
-
+### Word Frequency
 As someone who has played Hangman since first grade, I've always known to start with the letter 'e'. Memories of past games inspired me to look into letter frequencies. In my research of this topic, several tables were frequently referenced:
 - [Cornell Math department's table](https://www.math.cornell.edu/~mec/2003-2004/cryptography/subs/frequencies.html) that's based on analysis of 40,000 words
 - [Concise Oxford Dictionary's list](https://en.oxforddictionaries.com/explore/which-letters-are-used-most) that's based on all the words in the dictionary's 11th edition (2004)
@@ -13,16 +10,19 @@ Curious which frequency table is more efficient for the scope of this game, I ra
 - Cornell: solved 3/10 words
 - Oxford: solved 7/10 words
 
-- derive set of rules for guessing the letters/word
-  - letter frequency
-    - assign each letter a weight
-    - initialize alphabet array in order of frequency (eg start with e...q)
-    - [Cornell Math Frequency Table](https://www.math.cornell.edu/~mec/2003-2004/cryptography/subs/frequencies.html)
-  - letter associations
-    - ex: th, tion, sion, qu, er, kn, etc
-    - [Cornell's diagraph frequency table](https://www.math.cornell.edu/~mec/2003-2004/cryptography/subs/digraphs.html)
-- dictionary
-  - external api
+These results make sense. Although there isn't much documentation associated with the Cornell list, I think it's fair to assume that its analysis used 40,000 words in *natural text* since its ordering of letters is different to that of the Oxford table, which disregards word frequency of natural text and uses words straight from the dictionary. Because the API appears to randomly select a word, the Oxford table is a better fit for this game.
+
+From this experiment, it appears that the API feeds from a wide range of words, from  
+- normal: tenant, hospital
+- obscure: carinaria, oncometric
+- invalid: vomitingly, unexcusing
+- non-english: infern (catalan?), shakti (hindi)
+- family names: belucki, witneyer
+
+Because of the later 4 categories, it won't be helpful to use [dia or multigraph frequency tables](https://www.math.cornell.edu/~mec/2003-2004/cryptography/subs/digraphs.html) (eg th, er, tion) to complete words nor would sourcing guesses from an external dictionary API.
+
+### Kaizen
+Kaizen is a Japanese word that roughly translates to "continuous improvement." 
   - build own (via trie?) after game starts
     - especially helpful if server only choses from limited amount of words
 
