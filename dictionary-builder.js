@@ -22,6 +22,8 @@ function runGame() {
   });
 
   startPromise.then(feedLetters());
+
+
 }
 
 function startGame() {
@@ -35,6 +37,8 @@ function startGame() {
       wordLength = data.word.length;
       console.log('gameId:', gameId);
       console.log('length:', wordLength);
+
+      // run feedLetters(gameId) here
     }
   );
 }
@@ -45,30 +49,32 @@ function feedLetters() {
 
   console.log('--- starting letter feed ---');
 
-  let i = 0;
   // for (var i = 0; i < Letters.length; i++) {
-  while (status === 'active') {
-    let currentLetter = Letters[i];
+  //   let currentLetter = Letters[i];
+  //
+    // guessLetter(url, currentLetter);
+  // }
 
-    guessLetter(url, currentLetter);
-    i++;
-  }
+
 }
+  let url = `http://int-sys.usr.space/hangman/games/d96fcd353710/guesses`;
 
-function guessLetter(url, currentLetter) {
-      console.log(currentLetter);
-  request.post({url: url, formData: {char: currentLetter}},
-    function(error, response, body) {
-      console.log("letter being guessed:", currentLetter);
+
+function guessLetter() {
+  request.post({url: url, formData: {char: Letters.shift()}},
+    function cb(error, response, body) {
       if (error) return console.log('error:', error);
 
       let data = JSON.parse(body);
       console.log('feed letter body:', body);
+      console.log("letters now", Letters);
 
       if (data.status === 'inactive') {
         handleWord(data);
-        status = 'inactive';
         // BREAK OUT OF FOR LOOP!
+      } else {
+        console.log("making another post req");
+        request.post({url: url, formData: {char: Letters.shift()}}, cb);
       }
     }
   );
@@ -100,11 +106,10 @@ function saveWord(word){
       });
     }
   });
-
 }
 
-feedLetters();
-
+// feedLetters();
+guessLetter();
 
 // saveWord("morsal,");
 // saveWord("infern,");
