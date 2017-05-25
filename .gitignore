@@ -1,2 +1,4 @@
 # hiding my email from web crawlers...
 config.js
+
+node_modules/

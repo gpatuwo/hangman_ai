@@ -1,10 +1,9 @@
 # Hangman Solver
 
-### Word Frequency
+### Letter Frequency
 As someone who has played Hangman since first grade, I've always known to start with the letter 'e'. Memories of past games inspired me to look into letter frequencies. In my research of this topic, several tables were frequently referenced:
 - [Cornell Math department's table](https://www.math.cornell.edu/~mec/2003-2004/cryptography/subs/frequencies.html) that's based on analysis of 40,000 words
 - [Concise Oxford Dictionary's list](https://en.oxforddictionaries.com/explore/which-letters-are-used-most) that's based on all the words in the dictionary's 11th edition (2004)
-- [Cornell's diagraph frequency table](https://www.math.cornell.edu/~mec/2003-2004/cryptography/subs/digraphs.html)
 
 Curious which frequency table is more efficient for the scope of this game, I ran a test using Postman requests of 10 rounds going straight down the Cornell table and 10 rounds down the Oxford table.
 - Cornell: solved 3/10 words
@@ -19,10 +18,12 @@ From this experiment, it appears that the API feeds from a wide range of words, 
 - non-english: infern (catalan?), shakti (hindi)
 - family names: belucki, witneyer
 
-Because of the later 4 categories, it won't be helpful to use [dia or multigraph frequency tables](https://www.math.cornell.edu/~mec/2003-2004/cryptography/subs/digraphs.html) (eg th, er, tion) to complete words nor would sourcing guesses from an external dictionary API.
+Because of the later 4 categories, it won't be helpful to use [di or multigraph frequency tables](https://www.math.cornell.edu/~mec/2003-2004/cryptography/subs/digraphs.html) (eg th, er, tion) to complete words nor would sourcing guesses from an external dictionary API.
+
+
 
 ### Kaizen
-Kaizen is a Japanese word that roughly translates to "continuous improvement." 
+Kaizen is a Japanese word that roughly translates to "continuous improvement." Because there's no clear pattern of words the API can send out, let's teach the AI solver to eventually
   - build own (via trie?) after game starts
     - especially helpful if server only choses from limited amount of words
 
