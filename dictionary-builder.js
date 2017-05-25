@@ -68,7 +68,7 @@ function handleWord(data) {
 }
 
 function saveWord(word){
-  let length = word.length - 1;
+  let length = word.length;
   let path = `./dictionary/${length}-letter-words.txt`;
   word += '\n';
 
@@ -95,4 +95,5 @@ function saveWord(word){
   });
 }
 
-setInterval(startGame, 10000);
+startGame();
+// setInterval(startGame, 10000);
