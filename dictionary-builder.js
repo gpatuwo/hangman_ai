@@ -16,7 +16,7 @@ const Letters = [ 'e', 'a', 'r', 'i', 'o', 't', 'n',
 
 var wordLength, status = 'active', gameId, startTime = Date.now();
 
-function startGame() {
+var startGame = function () {
   console.log('START TIME:', startTime);
   let url = "http://int-sys.usr.space/hangman/games/";
   request.post({url: url, formData: {email: config.email}},
@@ -31,13 +31,13 @@ function startGame() {
 
       url += `${gameId}/guesses`;
       console.log("<------ starting feedLetters ------>");
-      feedLetters(url);
+      feedLetters(url, 0);
     }
   );
-}
+};
 
-function feedLetters(url) {
-  request.post({url: url, formData: {char: Letters.shift()}},
+function feedLetters(url, idx = 0) {
+  request.post({url: url, formData: {char: Letters[idx]}},
     function cb(error, response, body) {
       if (error) return console.log('error:', error);
 
@@ -50,7 +50,7 @@ function feedLetters(url) {
         handleWord(data);
       } else {
         console.log("making another post req");
-        request.post({url: url, formData: {char: Letters.shift()}}, cb);
+        request.post({url: url, formData: {char: Letters[idx++]}}, cb);
       }
     }
   );
@@ -87,10 +87,12 @@ function saveWord(word){
       fs.appendFile('./dictionary/all-words.txt', word, () => {
         console.log(`${word} was added to all words`);
       });
+
+      // to figure out delay time for script timer
       let endTime = Date.now();
       console.log(`${endTime} - ${startTime} = ${endTime - startTime} milliseconds`);
     }
   });
 }
 
-startGame();
+setInterval(startGame, 10000);

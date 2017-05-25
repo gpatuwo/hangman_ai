@@ -54,3 +54,8 @@ ex:
 - if not, guess next freq vowel
 
 ### <-- end loop --> ###
+
+## Errors
+- request form data invalid bc of async callbacks
+  - looping each request right after each other
+  - running the dictionary builder script (bc letters were shifted out, array was mutated for the next run of the script)
