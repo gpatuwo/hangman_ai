@@ -49,13 +49,14 @@ function feedLetters() {
   // for (var i = 0; i < Letters.length; i++) {
   while (status === 'active') {
     let currentLetter = Letters[i];
-    console.log(currentLetter);
+
     guessLetter(url, currentLetter);
     i++;
   }
 }
 
 function guessLetter(url, currentLetter) {
+      console.log(currentLetter);
   request.post({url: url, formData: {char: currentLetter}},
     function(error, response, body) {
       console.log("letter being guessed:", currentLetter);
@@ -80,16 +81,30 @@ function handleWord(data) {
 
   let word = firstMsgWord === 'Congrats!' ? data.word : lastMsgWord;
   console.log("FOUND WORD:", word);
+
+  saveWord(word);
 }
 
 function saveWord(word){
-  let length = word.length;
+  let length = word.length - 1;
   let path = `./dictionary/${length}-letter-words.txt`;
-  fs.appendFile(path, word, (err) => {
+
+  fs.readFile(path, (err, data) => {
     if (err) console.log(err);
-    console.log(`${word} was added to ${path}`);
+    if (data.indexOf(word) >= 0) {
+      console.log("you've seen this word before!");
+    } else {
+      fs.appendFile(path, word, (err2) => {
+        if (err2) console.log(err2);
+        console.log(`${word} was added to ${path}`);
+      });
+    }
   });
+
 }
 
-// feedLetters();
-writeWord("morsal");
+feedLetters();
+
+
+// saveWord("morsal,");
+// saveWord("infern,");
