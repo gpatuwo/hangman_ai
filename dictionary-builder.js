@@ -16,6 +16,8 @@ const Letters = [ 'e', 'a', 'r', 'i', 'o', 't', 'n',
 
 var wordLength, status = 'active', gameId, startTime = Date.now();
 
+var solved = 0, missed = 0, total = 0;
+
 var startGame = function () {
   console.log('START TIME:', startTime);
   let url = "http://int-sys.usr.space/hangman/games/";
@@ -50,7 +52,7 @@ function feedLetters(url, idx = 0) {
         handleWord(data);
       } else {
         console.log("making another post req");
-        request.post({url: url, formData: {char: Letters[idx++]}}, cb);
+        request.post({url: url, formData: {char: Letters[++idx]}}, cb);
       }
     }
   );
@@ -61,7 +63,17 @@ function handleWord(data) {
   let firstMsgWord = data.msg.split(" ").shift();
   let lastMsgWord = data.msg.split(" ").pop();
 
-  let word = firstMsgWord === 'Congrats!' ? data.word : lastMsgWord;
+  let word;
+
+  if (firstMsgWord === 'Congrats!') {
+    word = data.word;
+    solved++;
+    total++;
+  } else {
+    word = lastMsgWord;
+    missed++;
+    total++;
+  }
   console.log("FOUND WORD:", word);
 
   saveWord(word);
@@ -91,9 +103,10 @@ function saveWord(word){
       // to figure out delay time for script timer
       let endTime = Date.now();
       console.log(`${endTime} - ${startTime} = ${endTime - startTime} milliseconds`);
+
+      console.log(`solved: ${solved} | missed: ${missed} | total: ${total}`);
     }
   });
 }
 
-startGame();
-// setInterval(startGame, 10000);
+setInterval(startGame, 10000);

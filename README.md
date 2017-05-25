@@ -27,6 +27,9 @@ Kaizen is a Japanese word that roughly translates to "continuous improvement." B
   - build own (via trie?) after game starts
     - especially helpful if server only choses from limited amount of words
 
+after script was built, ran straight down oxford list
+solved: 8 | missed: 9 | total: 17
+
 ## Sequence
 ### Post request to fetch new word
 - receive JSON
@@ -58,4 +61,6 @@ ex:
 ## Errors
 - request form data invalid bc of async callbacks
   - looping each request right after each other
-  - running the dictionary builder script (bc letters were shifted out, array was mutated for the next run of the script)
+  - running the dictionary builder script
+    - bc letters were originally shifted out, array was mutated for the next run of the script
+    - fixed it so
