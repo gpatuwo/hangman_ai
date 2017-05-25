@@ -14,19 +14,10 @@ const Letters = [ 'e', 'a', 'r', 'i', 'o', 't', 'n',
  's', 'l', 'c', 'u', 'd', 'p', 'm', 'h', 'g', 'b',
   'f', 'y', 'w', 'k', 'v', 'x', 'z', 'j', 'q' ];
 
-var wordLength, status = 'active', gameId;
-
-function runGame() {
-  let startPromise = new Promise(resolve => {
-    startGame();
-  });
-
-  startPromise.then(feedLetters());
-
-
-}
+var wordLength, status = 'active', gameId, startTime = Date.now();
 
 function startGame() {
+  console.log('START TIME:', startTime);
   let url = "http://int-sys.usr.space/hangman/games/";
   request.post({url: url, formData: {email: config.email}},
     function(error, response, body) {
@@ -96,6 +87,8 @@ function saveWord(word){
       fs.appendFile('./dictionary/all-words.txt', word, () => {
         console.log(`${word} was added to all words`);
       });
+      let endTime = Date.now();
+      console.log(`${endTime} - ${startTime} = ${endTime - startTime} milliseconds`);
     }
   });
 }

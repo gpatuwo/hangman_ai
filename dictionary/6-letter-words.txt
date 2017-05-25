@@ -2,3 +2,5 @@ morsal
 infern
 topwise
 angling
+hodgkin
+pinolin
