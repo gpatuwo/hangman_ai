@@ -22,7 +22,7 @@ Because of the later 4 categories, it won't be helpful to use [di or multigraph 
 
 
 
-### Kaizen
+### Kaizen / Dictionary Builder
 Kaizen is a Japanese word that roughly translates to "continuous improvement." Because there's no clear pattern of words the API can send out, let's teach the AI solver to eventually
   - build own (via trie?) after game starts
     - especially helpful if server only choses from limited amount of words

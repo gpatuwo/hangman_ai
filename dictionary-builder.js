@@ -52,7 +52,7 @@ function feedLetters(url) {
 
       let data = JSON.parse(body);
       console.log('feed letter body:', body);
-      console.log("letters now", Letters);
+      // console.log("letters now", Letters);
 
       if (data.status === 'inactive') {
         // BREAKS OUT OF FOR LOOP! :D
@@ -79,6 +79,7 @@ function handleWord(data) {
 function saveWord(word){
   let length = word.length - 1;
   let path = `./dictionary/${length}-letter-words.txt`;
+  word += '\n';
 
   fs.readFile(path, (err, data) => {
     if (err) console.log(err);
@@ -89,6 +90,11 @@ function saveWord(word){
       fs.appendFile(path, word, (err2) => {
         if (err2) console.log(err2);
         console.log(`${word} was added to ${path}`);
+      });
+
+      //to keep count how many words have been seen
+      fs.appendFile('./dictionary/all-words.txt', word, () => {
+        console.log(`${word} was added to all words`);
       });
     }
   });
