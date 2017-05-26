@@ -123,7 +123,9 @@ function saveWord(word, missedWord){
       });
 
       if (missedWord) {
-        fs.appendFile('./dictionary/missed-words.txt', `${missedWord}, ${word}`);
+        fs.appendFile('./dictionary/missed-words.txt', `${missedWord}, ${word}`, () => {
+          console.log(`${word} was added to missed words`);
+        });
       }
       // to figure out delay time for script timer
       // let endTime = Date.now();

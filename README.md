@@ -49,6 +49,10 @@ would guessing the vowels first increase rate of success and/or run time?
 solved: 101 | missed: 99 | total: 200 | success rate 50.5
 at roughly 5.4 words/min
 
+- make own frequency table???
+- server-side js logic
+- split is a linear operation on the thing that we're splitting. but we know what's gonna come back so it's dependent on the lenght of the word
+
 # TO DO
 - how to test runtime
 - how many tests do i need to run in order to be statistically significant?

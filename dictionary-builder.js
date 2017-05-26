@@ -87,6 +87,7 @@ function saveWord(word){
 
   fs.readFile(path, (err, data) => {
     if (err) console.log(err);
+    // BOTTLENECK!!
     if (data.indexOf(word) >= 0) {
       console.log("you've seen this word before!");
       fs.appendFile('./dictionary/seen-words.txt', word);
