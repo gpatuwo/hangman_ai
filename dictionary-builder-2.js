@@ -53,7 +53,7 @@ function feedVowels(url, idx){
       }
 
       // feed consonants if count > 1/2, else continue vowels
-      if ( vowelCount/wordLength > 0.51) {
+      if ( vowelCount/wordLength > 0.51 || idx === 5) {
         feedConsonants(url, 0);
       } else {
         request.post({url: url, formData: {char: Vowels[++idx]}}, cb);

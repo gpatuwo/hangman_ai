@@ -1,5 +1,6 @@
 # Hangman Solver
 
+## Process
 ### Letter Frequency
 As someone who has played Hangman since first grade, I've always known to start with the letter 'e'. Memories of past games inspired me to look into letter frequencies. In my research of this topic, several tables were frequently referenced:
 - [Cornell Math department's table](https://www.math.cornell.edu/~mec/2003-2004/cryptography/subs/frequencies.html) that's based on analysis of 40,000 words
@@ -36,7 +37,17 @@ solved: 46 | missed: 43 | total: 89 | success rate 51.68539325842697
 __________________________________________________________________
 solved: 212 | missed: 191 | total: 403 | success rate 52.6%
 
-~ 54-51% success at roughly 5 words/min
+~ 54-51% success at roughly 5.4 words/min
+
+would guessing the vowels first increase rate of success and/or run time?
+- expect success rate to be higher
+- extra loop ( O(wordlength) time) involved, but is higher success rate able to speed it up or at least be the same?
+
+(--solved: 24 | missed: 26 | total: 50 | success rate 48
+(--solved: 57 | missed: 43 | total: 100 | success rate 56.99999999999999
+(--solved: 77 | missed: 73 | total: 150 | success rate 51.33333333333333
+solved: 101 | missed: 99 | total: 200 | success rate 50.5
+at roughly 5.4 words/min
 
 ## Sequence
 ### Post request to fetch new word
