@@ -30,6 +30,8 @@ Kaizen is a Japanese word that roughly translates to "continuous improvement." B
 after script was built, ran straight down oxford list
 solved: 8 | missed: 9 | total: 17
 solved: 63 | missed: 58 | total: 121
+--solved: 54 | missed: 46 | total: 100 | success rate 54--
+solved: 95 | missed: 81 | total: 176 | success rate 53.97727272727273
 
 ## Sequence
 ### Post request to fetch new word
