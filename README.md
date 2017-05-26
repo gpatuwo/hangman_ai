@@ -18,7 +18,7 @@ From this experiment, it appears that the API feeds from a wide range of words, 
 - non-english: infern (catalan?), shakti (hindi)
 - family names: belucki, witneyer
 
-Because of the later 4 categories, it won't be helpful to use [di or multigraph frequency tables](https://www.math.cornell.edu/~mec/2003-2004/cryptography/subs/digraphs.html) (eg th, er, tion) to complete words nor would sourcing guesses from an external dictionary API.
+Because of the later 4 categories, it won't be extremely helpful to use [di or multigraph frequency tables](https://www.math.cornell.edu/~mec/2003-2004/cryptography/subs/digraphs.html) (eg th, er, tion) to complete words nor would sourcing guesses from an external dictionary API.
 
 
 
@@ -29,6 +29,7 @@ Kaizen is a Japanese word that roughly translates to "continuous improvement." B
 
 after script was built, ran straight down oxford list
 solved: 8 | missed: 9 | total: 17
+solved: 63 | missed: 58 | total: 121
 
 ## Sequence
 ### Post request to fetch new word
