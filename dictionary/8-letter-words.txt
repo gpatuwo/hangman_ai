@@ -28,3 +28,5 @@ bitstock
 trembler
 bacillar
 ornithon
+roseless
+uncially

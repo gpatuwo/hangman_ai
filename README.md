@@ -65,3 +65,6 @@ ex:
   - running the dictionary builder script
     - bc letters were originally shifted out, array was mutated for the next run of the script
     - fixed it so
+- setInterval delay
+  - tested run time by recording start time and end time, most were under 7000 milliseconds
+  - played around with making less delay time but when time was 7000, a slower run would continue and then get chopped out (ie start feedLetters again but gameId would be the same and then in the middle of that run, it would change gameId and thus the word)

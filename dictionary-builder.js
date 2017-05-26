@@ -19,7 +19,7 @@ var wordLength, status = 'active', gameId, startTime = Date.now();
 var solved = 0, missed = 0, total = 0;
 
 var startGame = function () {
-  console.log('START TIME:', startTime);
+  // console.log('START TIME:', startTime);
   let url = "http://int-sys.usr.space/hangman/games/";
   request.post({url: url, formData: {email: config.email}},
     function(error, response, body) {
@@ -52,6 +52,7 @@ function feedLetters(url, idx = 0) {
         handleWord(data);
       } else {
         console.log("making another post req");
+        // not recursive bc it's happening asychroniously
         request.post({url: url, formData: {char: Letters[++idx]}}, cb);
       }
     }
@@ -101,12 +102,12 @@ function saveWord(word){
       });
 
       // to figure out delay time for script timer
-      let endTime = Date.now();
-      console.log(`${endTime} - ${startTime} = ${endTime - startTime} milliseconds`);
+      // let endTime = Date.now();
+      // console.log(`${endTime} - ${startTime} = ${endTime - startTime} milliseconds`);
 
-      console.log(`solved: ${solved} | missed: ${missed} | total: ${total}`);
+      console.log(`solved: ${solved} | missed: ${missed} | total: ${total} | success rate ${(solved / total)*100}`);
     }
   });
 }
 
-setInterval(startGame, 10000);
+setInterval(startGame, 11000);
