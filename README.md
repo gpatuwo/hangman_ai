@@ -13,7 +13,7 @@ These results make sense. Although there isn't much documentation associated wit
 
 From this experiment, it appears that the API feeds from a wide range of words, from  
 - normal: tenant, hospital
-- obscure: carinaria, oncometric
+- obscure: carinaria, kieselguhr
 - invalid: vomitingly, unexcusing
 - non-english: infern (catalan?), shakti (hindi)
 - family names: belucki, witneyer
@@ -30,8 +30,13 @@ Kaizen is a Japanese word that roughly translates to "continuous improvement." B
 after script was built, ran straight down oxford list
 solved: 8 | missed: 9 | total: 17
 solved: 63 | missed: 58 | total: 121
---solved: 54 | missed: 46 | total: 100 | success rate 54--
+(--solved: 54 | missed: 46 | total: 100 | success rate 54--)
 solved: 95 | missed: 81 | total: 176 | success rate 53.97727272727273
+solved: 46 | missed: 43 | total: 89 | success rate 51.68539325842697
+__________________________________________________________________
+solved: 212 | missed: 191 | total: 403 | success rate 52.6%
+
+~ 54-51% success at roughly 5 words/min
 
 ## Sequence
 ### Post request to fetch new word
