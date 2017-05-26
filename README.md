@@ -16,7 +16,7 @@ From this experiment, it appears that the API feeds from a wide range of words, 
 - normal: tenant, hospital
 - obscure: carinaria, kieselguhr
 - invalid: vomitingly, unexcusing
-- non-english: infern (catalan?), shakti (hindi)
+- non-english: infern (catalan?), shakti (hindi), jarra (spanish)
 - family names: belucki, witneyer
 
 Because of the later 4 categories, it won't be extremely helpful to use [di or multigraph frequency tables](https://www.math.cornell.edu/~mec/2003-2004/cryptography/subs/digraphs.html) (eg th, er, tion) to complete words nor would sourcing guesses from an external dictionary API.
@@ -48,6 +48,12 @@ would guessing the vowels first increase rate of success and/or run time?
 (--solved: 77 | missed: 73 | total: 150 | success rate 51.33333333333333
 solved: 101 | missed: 99 | total: 200 | success rate 50.5
 at roughly 5.4 words/min
+
+# TO DO
+- how to test runtime
+- how many tests do i need to run in order to be statistically significant?
+- isolate and analyze words that were missed
+- setInterval delay too much?
 
 ## Sequence
 ### Post request to fetch new word
@@ -86,3 +92,4 @@ ex:
 - setInterval delay
   - tested run time by recording start time and end time, most were under 7000 milliseconds
   - played around with making less delay time but when time was 7000, a slower run would continue and then get chopped out (ie start feedLetters again but gameId would be the same and then in the middle of that run, it would change gameId and thus the word)
+- script would stop when it got freakishly long words that exceeded the letter-count lists provided

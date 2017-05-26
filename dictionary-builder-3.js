@@ -89,17 +89,19 @@ function handleWord(data) {
     word = data.word;
     solved++;
     total++;
+    saveWord(word);
   } else {
+    let missedWord = data.word;
     word = lastMsgWord;
     missed++;
     total++;
+    saveWord(word, missedWord);
   }
   console.log("FOUND WORD:", word);
 
-  saveWord(word);
 }
 
-function saveWord(word){
+function saveWord(word, missedWord){
   let length = word.length;
   let path = `./dictionary/${length}-letter-words.txt`;
   word += '\n';
@@ -120,6 +122,9 @@ function saveWord(word){
         console.log(`${word} was added to all words`);
       });
 
+      if (missedWord) {
+        fs.appendFile('./dictionary/missed-words.txt', `${missedWord}, ${word}`);
+      }
       // to figure out delay time for script timer
       // let endTime = Date.now();
       // console.log(`${endTime} - ${startTime} = ${endTime - startTime} milliseconds`);

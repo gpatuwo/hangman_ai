@@ -12,3 +12,5 @@ koso
 peed
 wasp
 brin
+push
+zone
