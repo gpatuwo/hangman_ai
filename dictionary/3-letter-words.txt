@@ -18,3 +18,8 @@ bae
 gif
 reg
 tou
+joe
+hue
+waf
+pup
+awn
