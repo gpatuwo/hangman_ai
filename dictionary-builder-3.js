@@ -136,4 +136,4 @@ function saveWord(word, missedWord){
   });
 }
 
-setInterval(startGame, 11000);
+setInterval(startGame, 8000);

@@ -23,3 +23,6 @@ hue
 waf
 pup
 awn
+pin
+put
+yid

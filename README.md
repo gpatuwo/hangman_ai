@@ -50,6 +50,9 @@ solved: 101 | missed: 99 | total: 200 | success rate 50.5
 at roughly 5.4 words/min
 
 - make own frequency table???
+  - for this dictionary set
+  - for each length list
+  - for letter position
 - server-side js logic
 - split is a linear operation on the thing that we're splitting. but we know what's gonna come back so it's dependent on the lenght of the word
 
