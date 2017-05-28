@@ -111,4 +111,4 @@ function saveWord(word){
   });
 }
 
-setInterval(startGame, 7000);
+setInterval(startGame, 10000);
