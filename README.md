@@ -56,6 +56,12 @@ at roughly 5.4 words/min
 - server-side js logic
 - split is a linear operation on the thing that we're splitting. but we know what's gonna come back so it's dependent on the lenght of the word
 
+- time until you hit next repeat / how many words between the two points
+--> start seeing pattern of this ratio. when this ratio hits XXX, bottom will get shorter and shorter also the numerator. ratio may be going down and up and the up and down (like parabola?), when turns corner it's good enough.
+
+- keep track of how many words i see in between, time between seeing repeat words, what number is it stabilizing at? stop there
+- distrubition fuction
+
 # TO DO
 - how to test runtime
 - how many tests do i need to run in order to be statistically significant?

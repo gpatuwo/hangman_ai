@@ -1,5 +1,6 @@
-'use strict';
 // essentially same as first builder but this one first guesses vowels
+
+'use strict';
 
 var request = require('request');
 const Promise = require('promise');

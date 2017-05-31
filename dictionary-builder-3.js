@@ -1,5 +1,6 @@
+// same as builder 2, also saves missed words to file
+
 'use strict';
-// essentially same as first builder but this one first guesses vowels
 
 var request = require('request');
 const Promise = require('promise');
