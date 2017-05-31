@@ -8,7 +8,7 @@ const fs = require('fs');
 
 let wordsHash = {};
 
-function createInitialHashDictionary() {
+function createInitialJsonDictionary() {
 
   let length = 1;
   let path = `./dictionary-txt/${length}-letter-words.txt`;
@@ -41,4 +41,4 @@ function createInitialHashDictionary() {
   });
 }
 
-createInitialHashDictionary();
+createInitialJsonDictionary();
