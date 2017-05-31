@@ -1,5 +1,5 @@
 /*
-script to build json dictionary from dictionary txt files
+script to build object dictionary from dictionary txt files
 */
 
 'use strict';
@@ -10,7 +10,7 @@ let wordsHash = {};
 
 function createInitialJsonDictionary() {
 
-  let length = 1;
+  let length = 4;
   let path = `./dictionary-txt/${length}-letter-words.txt`;
   /* data is a buffer, need to convert to usable data(string).
   O(num of words in list) time + space */
@@ -26,13 +26,15 @@ function createInitialJsonDictionary() {
 
     console.log(wordsHash);
 
-    let endPath =  `./dictionary-json/${length}-letter.json`;
+    let endPath =  `./dictionary-hash/${length}-letter.json`;
 
+    // have to stringify hash bc of writeFile can only export as string, buffer or arr
     fs.writeFileSync(endPath, JSON.stringify(wordsHash, null, 2) , 'utf-8');
 
     // loop thru length dictionary files
-    if (length < 24) {
+    if (length < 25) {
       length++;
+      // need to reassign path bc of asycn callback
       path = `./dictionary-txt/${length}-letter-words.txt`;
       fs.readFile(path, "utf8", cb);
     } else {

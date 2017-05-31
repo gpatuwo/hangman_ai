@@ -68,9 +68,27 @@ freq-gen sequence:
   - if no,
     - then guess 2nd length list letter
 
-hash builder:
+## App Components
+1. dictionary builder script: to fetch a ton of words from API. stored words in txt files
 
-frequency generator:
+2. json dictionary builder: to convert text files usable a data type for determine initial frequency list for each length dictionary
+
+3. frequency generator:
+- find/save initial frequency for each length dictionary
+- re-used to gen order of letter guesses as
+
+4. letter guesser: handles logic for guessing the next letter
+- gets next letter to guess from freq gen
+- narrows down options from hash dictionary
+- repeats the above 2 until game over (guessed it or not)
+
+5. word saver: saves word into dictionary (smarter next time!)
+- breaks down missed word into chars
+- saves array into corresponding json list
+- updates initial freq count and list
+
+6. ui to visually showcase server-side logic
+
 
 
 # TO DO
