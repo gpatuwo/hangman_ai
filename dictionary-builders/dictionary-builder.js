@@ -82,7 +82,7 @@ function handleWord(data) {
 
 function saveWord(word){
   let length = word.length;
-  let path = `./dictionary/${length}-letter-words.txt`;
+  let path = `./dictionary-txt/${length}-letter-words.txt`;
   word += '\n';
 
   fs.readFile(path, (err, data) => {
@@ -90,7 +90,7 @@ function saveWord(word){
     // BOTTLENECK!!
     if (data.indexOf(word) >= 0) {
       console.log("you've seen this word before!");
-      fs.appendFile('./dictionary/seen-words.txt', word);
+      fs.appendFile('./didictionary-txt/seen-words.txt', word);
     } else {
       fs.appendFile(path, word, (err2) => {
         if (err2) console.log(err2);
