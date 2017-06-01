@@ -8,9 +8,9 @@ const fs = require('fs');
 
 let wordsHash = {};
 
-function createInitialJsonDictionary() {
+function createInitialJsonDictionary(length) {
 
-  let length = 4;
+  // let length = 10;
   let path = `./dictionary-txt/${length}-letter-words.txt`;
   /* data is a buffer, need to convert to usable data(string).
   O(num of words in list) time + space */
@@ -24,27 +24,28 @@ function createInitialJsonDictionary() {
       wordsHash[j] = word.split('');
     }
 
-    console.log(wordsHash);
+    // console.log(wordsHash);
 
-    let endPath =  `./dictionary-hash/${length}-letter.json`;
+    let endPath =  `./dictionary-json/${length}-letter.json`;
 
     /*
-    have to stringify hash bc of writeFile can only export as string, buffer or arr
+    have to stringify hash bc writeFile can only export as string, buffer or arr
 
     stringify also allows to maintain structure of object
     */
     fs.writeFileSync(endPath, JSON.stringify(wordsHash, null, 2) , 'utf-8');
 
     // loop thru length dictionary files
-    if (length < 25) {
-      length++;
-      // need to reassign path bc of asycn callback
-      path = `./dictionary-txt/${length}-letter-words.txt`;
-      fs.readFile(path, "utf8", cb);
-    } else {
-      console.log(`created ${length} lists`);
-    }
+    // if (length < 25) {
+    //   length++;
+    //   // need to reassign path bc of asycn callback
+    //   path = `./dictionary-txt/${length}-letter-words.txt`;
+    //   fs.readFile(path, "utf8", cb);
+    // } else {
+    //   console.log(`created ${length} lists`);
+    // }
   });
 }
 
-createInitialJsonDictionary();
+
+createInitialJsonDictionary(10);

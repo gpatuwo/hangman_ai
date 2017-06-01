@@ -6,11 +6,6 @@ const fs = require('fs');
 
 module.exports = function frequencyGenerator(words, length) {
 
-  // words can be 'initialize dictionary' or already object
-  if (typeof words === 'string') {
-    words = createHashDictionary(length);
-  }
-
   // loop through words to create lettersCount hash
   let lettersCount = countLetters(words, length);
 
@@ -20,13 +15,6 @@ module.exports = function frequencyGenerator(words, length) {
   return frequencyList;
 };
 
-
-// convert json dictionary into object
-function createHashDictionary(length) {
-  let path = `./dictionary-json/${length}-letter.json`;
-
-  return JSON.parse( fs.readFileSync(path, "utf8") );
-}
 
 /* potential bottleneck?
   runtime: O(n * m),
