@@ -48,4 +48,4 @@ function createInitialJsonDictionary(length) {
 }
 
 
-createInitialJsonDictionary(10);
+createInitialJsonDictionary(12);
