@@ -32,22 +32,22 @@ module.exports = function letterGuesser(wordsHash, length,
   console.log("<------ starting letterGuesser ------>");
 
   if (gameStatus === 'inactive') return;
-  console.log('wordsHash:', wordsHash);
-  console.log('length:', length);
+
   let freqList = frequencyGenerator(wordsHash, length);
-  console.log('freqList:', JSON.stringify(freqList));
+  console.log('freqList:', freqList);
 
   // if already guessed letter, then go to next letter;
   while (lettersGuessed[freqList[i]]) {
     i++;
   }
 
+  console.log('i before post request:', i);
   console.log('guessesLeft:', guessesLeft);
 
   request.post({url: url, formData: {char: freqList[i]}},
     function cb(error, response, body) {
       let data = JSON.parse(body);
-      if (data.error) return console.log('post request error:', data.error);
+      if (data.error) console.log('post request error:', data.error);
 
       lettersGuessed[freqList[i]] = true;
 
@@ -68,13 +68,22 @@ module.exports = function letterGuesser(wordsHash, length,
           freqList = frequencyGenerator(newWords, length);
           console.log('freqList:', freqList);
 
-          // while (lettersGuessed[freqList[i]]) {
-          //   i++;
-          // }
+          i = 0;
+          console.log('reassigns i:', i);
 
-          request.post({url: url, formData: {char: freqList[++i]}}, cb);
-        } else if (Object.keys(newWords).length === 0) {
-          // go down oxford list
+          while (lettersGuessed[freqList[i]]) {
+            i++;
+          }
+          if (i >= freqList.length ) {
+            console.log('out of freqList guesses');
+            guessDownOxfordList(lettersGuessed, url);
+          } else {
+          request.post({url: url, formData: {char: freqList[i]}}, cb);
+          }
+        }
+        // // there's no words left
+        else if (Object.keys(newWords).length === 0) {
+          console.log('no words in dict left');
           guessDownOxfordList(lettersGuessed, url);
         }
         // guessed correct letter, do it again
@@ -90,12 +99,21 @@ module.exports = function letterGuesser(wordsHash, length,
       else {
         guessesLeft--;
         // none of the words match -> new word!
-        if (Object.keys(newWords).length === 0) {
-          // go down oxford list
-          guessDownOxfordList(lettersGuessed, url);
-        } else {
-          request.post({url: url, formData: {char: freqList[++i]}}, cb);
-        }
+        // if (Object.keys(newWords).length === 0 &&
+        //  currentWord === '_'.repeat(length)) {
+        //   guessDownOxfordList(lettersGuessed, url);
+        // }
+        // else {
+          while (lettersGuessed[freqList[i]]) {
+            i++;
+          }
+          if (i >= freqList.length ) {
+            console.log('out of freqList guesses');
+            guessDownOxfordList(lettersGuessed, url);
+          } else {
+            request.post({url: url, formData: {char: freqList[i]}}, cb);
+          }
+        // }
       }
     }
   );
@@ -123,6 +141,7 @@ function guessDownOxfordList(guessed, url, i = 0) {
       } else {
         console.log("making another post req");
         // not recursive bc it's happening asychroniously
+        guessed[OxfordList[i]] = true;
         request.post({url: url, formData: {char: OxfordList[++i]}}, cb);
       }
     }
