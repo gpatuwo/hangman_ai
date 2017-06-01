@@ -73,22 +73,22 @@ freq-gen sequence:
 
 2. json dictionary builder: to convert text files usable a data type for determine initial frequency list for each length dictionary
 
-hash dictionary builder: convert json dictionaries into exportable js objects
+ - hash dictionary builder: convert json dictionaries into exportable js objects --> cache initial length hash dicts via heroku's [memecache?](https://devcenter.heroku.com/articles/memcachier#node-js)
 
 3. frequency generator:
-- converts json length dictionary into object 
-- find/save initial frequency for each length dictionary
-- re-used to gen order of letter guesses as
+  - converts json length dictionary into object
+  - find/save initial frequency for each length dictionary
+  - re-used to gen order of letter guesses as
 
 4. letter guesser: handles logic for guessing the next letter
-- gets next letter to guess from freq gen
-- narrows down options from hash dictionary
-- repeats the above 2 until game over (guessed it or not)
+  - gets next letter to guess from freq gen
+  - narrows down options from hash dictionary
+  - repeats the above 2 until game over (guessed it or not)
 
 5. word saver: saves word into dictionary (smarter next time!)
-- breaks down missed word into chars
-- saves array into corresponding json list
-- updates initial freq count and list
+  - breaks down missed word into chars
+  - saves array into corresponding json list
+  - updates initial freq count and list
 
 6. ui to visually showcase server-side logic
 

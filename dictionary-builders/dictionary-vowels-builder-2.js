@@ -1,18 +1,16 @@
+// same as text builder, also saves missed words to file
+
 'use strict';
-// post request to fetch new word
-  // save word length
-  // save status
-// feed letters until status inactive
-// append word to length list
 
 var request = require('request');
 const Promise = require('promise');
 const fs = require('fs');
 const config = require('./config');
 
-const Letters = [ 'e', 'a', 'r', 'i', 'o', 't', 'n',
- 's', 'l', 'c', 'u', 'd', 'p', 'm', 'h', 'g', 'b',
-  'f', 'y', 'w', 'k', 'v', 'x', 'z', 'j', 'q' ];
+const Vowels = ['e', 'a', 'i', 'o', 'u', 'y'];
+const Consonants = [  'r',  't', 'n',
+ 's', 'l', 'c', 'd', 'p', 'm', 'h', 'g', 'b',
+  'f', 'w', 'k', 'v', 'x', 'z', 'j', 'q' ];
 
 var wordLength, status = 'active', gameId, startTime = Date.now();
 
@@ -33,13 +31,35 @@ var startGame = function () {
 
       url += `${gameId}/guesses`;
       console.log("<------ starting feedLetters ------>");
-      feedLetters(url, 0);
+      feedVowels(url, 0);
     }
   );
 };
 
-function feedLetters(url, idx = 0) {
-  request.post({url: url, formData: {char: Letters[idx]}},
+function feedVowels(url, idx){
+  request.post({url: url, formData: {char: Vowels[idx]}},
+    function cb(error, response, body) {
+      if (error) return console.log('error:', error);
+
+      let data = JSON.parse(body);
+      console.log('feed vowel body:', body);
+      // loop to count letters in response
+      let word = data.word, vowelCount = 0;
+      for (var i = 0; i < wordLength; i++) {
+        if (word[i] !== '_') vowelCount++;
+      }
+
+      // feed consonants if count > 1/2, else continue vowels
+      if ( vowelCount/wordLength > 0.51 || idx === 5) {
+        feedConsonants(url, 0);
+      } else {
+        request.post({url: url, formData: {char: Vowels[++idx]}}, cb);
+      }
+  });
+}
+
+function feedConsonants(url, idx) {
+  request.post({url: url, formData: {char: Consonants[idx]}},
     function cb(error, response, body) {
       if (error) return console.log('error:', error);
 
@@ -53,7 +73,7 @@ function feedLetters(url, idx = 0) {
       } else {
         console.log("making another post req");
         // not recursive bc it's happening asychroniously
-        request.post({url: url, formData: {char: Letters[++idx]}}, cb);
+        request.post({url: url, formData: {char: Consonants[++idx]}}, cb);
       }
     }
   );
@@ -70,27 +90,28 @@ function handleWord(data) {
     word = data.word;
     solved++;
     total++;
+    saveWord(word);
   } else {
+    let missedWord = data.word;
     word = lastMsgWord;
     missed++;
     total++;
+    saveWord(word, missedWord);
   }
   console.log("FOUND WORD:", word);
 
-  saveWord(word);
 }
 
-function saveWord(word){
+function saveWord(word, missedWord){
   let length = word.length;
-  let path = `./dictionary-txt/${length}-letter-words.txt`;
+  let path = `./dictionary/${length}-letter-words.txt`;
   word += '\n';
 
   fs.readFile(path, (err, data) => {
     if (err) console.log(err);
-    // BOTTLENECK!!
     if (data.indexOf(word) >= 0) {
       console.log("you've seen this word before!");
-      fs.appendFile('./didictionary-txt/seen-words.txt', word);
+      fs.appendFile('./dictionary/seen-words.txt', word);
     } else {
       fs.appendFile(path, word, (err2) => {
         if (err2) console.log(err2);
@@ -102,6 +123,11 @@ function saveWord(word){
         console.log(`${word} was added to all words`);
       });
 
+      if (missedWord) {
+        fs.appendFile('./dictionary/missed-words.txt', `${missedWord}, ${word}`, () => {
+          console.log(`${word} was added to missed words`);
+        });
+      }
       // to figure out delay time for script timer
       // let endTime = Date.now();
       // console.log(`${endTime} - ${startTime} = ${endTime - startTime} milliseconds`);
@@ -111,4 +137,4 @@ function saveWord(word){
   });
 }
 
-setInterval(startGame, 10000);
+setInterval(startGame, 8000);
