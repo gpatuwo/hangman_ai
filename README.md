@@ -26,6 +26,11 @@ Front-end
   - updates initial freq count and list
 
 6. ui to visually showcase server-side logic
+  - background-image:
+    linear-gradient(
+      to right,
+      #ff9900, #ffcc00
+    );
 
 ## Process
 ### Letter Frequency
@@ -134,7 +139,7 @@ ex:
   - tested run time by recording start time and end time, most were under 7000 milliseconds
   - played around with making less delay time but when time was 7000, a slower run would continue and then get chopped out (ie start feedLetters again but gameId would be the same and then in the middle of that run, it would change gameId and thus the word)
 - script would stop when it got freakishly long words that exceeded the letter-count lists provided
-- freq list generator had an 'undefined' in output array list 
+- freq list generator had an 'undefined' in output array list
   - json builder script got REAL WEIRD when got past 9 letters
   - issue: when tried to loop json dict builder
   - solution: disregarded loop and just manually inputed word length
