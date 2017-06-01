@@ -10,7 +10,8 @@ module.exports = function frequencyGenerator(words, length) {
   let lettersCount = countLetters(words, length);
 
   // reads LettersCount and puts letters in order
-  let frequencyList = Object.keys(lettersCount).sort( (a,b) => lettersCount[b] - lettersCount[a]);
+  let frequencyList =
+    Object.keys(lettersCount).sort( (a,b) => lettersCount[b] - lettersCount[a]);
 
   return frequencyList;
 };

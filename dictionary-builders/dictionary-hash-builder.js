@@ -4,13 +4,8 @@
 
 const fs = require('fs');
 
-function createHashDictionary(length) {
+module.exports = function createHashDictionary(length) {
   let path = `./dictionary-json/${length}-letter.json`;
 
- fs.readFile(path, "utf8", (err, data) => {
-    if (err) console.log(err);
-    console.log(data);
- });
-}
-
-createHashDictionary(10);
+ return JSON.parse(fs.readFileSync(path, "utf8"));
+};

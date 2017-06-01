@@ -14,16 +14,12 @@ const config = require('./config');
 
 let gameId, length, freqList;
 
-let wordsTest = createHashDictionary(24);
-console.log(wordsTest);
-// console.log(frequencyGenerator(wordsTest, 24));
-
 function startGame() {
   // request word
   let url = "http://int-sys.usr.space/hangman/games/";
   request.post({url: url, formData: {email: config.email}},
     (error, response, body) => {
-      if (error) return console.log('error in post request for new word:', error);
+      if (error) return console.log('post request error for new word:', error);
 
       console.log("<------ starting new game ------>");
 
@@ -54,3 +50,5 @@ function startGame() {
 function feedLetters(url) {
 
 }
+
+startGame();
