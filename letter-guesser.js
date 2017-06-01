@@ -1,6 +1,5 @@
 /* to dos:
   - refactor inputs!!!!!!
-  - recursive call on line 73?
   - invoke initial game request in constructor
 */
 'use strict';
