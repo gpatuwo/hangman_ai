@@ -29,7 +29,7 @@ function startGame() {
       length = data.word.length;
       console.log('new game request body:', data);
 
-      let jsonDictionary = require(`./dictionary-json/${length}-letter.json`);
+      const jsonDictionary = require(`./dictionary-json/${length}-letter.json`);
 
       // saving this variable for easier insertion into dict
       const nextWordKey = Object.keys(jsonDictionary).length;
@@ -40,8 +40,10 @@ function startGame() {
       console.log('freqList:', JSON.stringify(freqList));
 
       url += `${gameId}/guesses`;
+      feedStaticLetters(jsonDictionary, url);
       /* guess letters logic here
       1. feed freqList[0]
+
       2. parse response:
         if no, go down freqList for next letter
         if yes,
@@ -55,10 +57,10 @@ function startGame() {
 // startGame();
 
 
-// let words = createHashDictionary(10);
-// console.log('words hash created');
+const JsonDict = require(`./dictionary-json/10-letter.json`);
+console.log('words hash created');
 
-// freqList = frequencyGenerator(words, 10);
+freqList = frequencyGenerator(JsonDict, 10);
 
 let guessesLeft = 10;
 
@@ -77,8 +79,8 @@ function feedStaticLetters(url, i = 0) {
         // break out of loop
         console.log('jumping into feedCustomLetters');
         let word = data.word;
-        filterWords(words, word, length);
-        feedCustomLetters(url);
+        let newWords = filterWords(JsonDict, word, length);
+        feedCustomLetters(newWords, url);
       } else if (data.status === 'inactive') {
         return console.log('none of the letters work :( )');
       } else {
@@ -89,26 +91,54 @@ function feedStaticLetters(url, i = 0) {
   );
 }
 
-// returns new (or reassigns?)words obj
+// returns new words obj
 function filterWords(wordsHash, currentWord, wordLength) {
-  // parse currentWord
-  let positions = findLettersIdx(currentWord);
+  // parse currentWord, arr of idx w/letters
+  let lettersIdx = findLettersIdx(currentWord, wordLength);
+  let filteredWords = {};
 
   // itr through wordsHash to find matches
   for (var key in wordsHash) {
     if (wordsHash.hasOwnProperty(key)) {
       let word = wordsHash[key];
-      for (let i = 0; i < length; i++) {
 
+      // check if word matches letters
+      let shouldInsertWord = false;
+
+      for (var i = 0; i < lettersIdx.length; i++) {
+        let idx = lettersIdx[i];
+
+        if (word[idx] === currentWord[idx]) {
+          shouldInsertWord = true;
+        } else if ( i === lettersIdx.length - 1 &&
+          word[idx] !== currentWord[idx]) {
+          shouldInsertWord = false;
+        } else {
+          // skip to next word;
+          break;
+        }
       }
+
+      // here means went thru word and all letters match
+      if (shouldInsertWord === true) filteredWords[key] = word;
     }
   }
+
+  return filteredWords;
 }
 
-function findLettersIdx(currentWord) {
-  let positions = {};
 
+function findLettersIdx(currentWord, wordLength) {
+  let lettersIdx = [];
+
+  for (let i = 0; i < wordLength; i++){
+      if (currentWord[i] !== '_') lettersIdx.push(i);
+  }
+
+  return lettersIdx;
 }
+
+console.log(filterWords(JsonDict, '___e_____e', 10));
 
 function feedCustomLetters() {
 
@@ -117,4 +147,4 @@ function feedCustomLetters() {
 let guessUrl = "http://int-sys.usr.space/hangman/games/9c393441c596/guesses";
 
 // feedStaticLetters(guessUrl);
-// feedCustomLetters(guessUrl);
+feedCustomLetters(guessUrl);
