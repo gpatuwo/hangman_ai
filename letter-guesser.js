@@ -13,20 +13,6 @@ const OxfordList = [ 'e', 'a', 'r', 'i', 'o', 't', 'n',
  's', 'l', 'c', 'u', 'd', 'p', 'm', 'h', 'g', 'b',
   'f', 'y', 'w', 'k', 'v', 'x', 'z', 'j', 'q' ];
 
-// vars for testing
-// const JsonDict = require(`./dictionary-json/15-letter.json`);
-// console.log('words hash created');
-//
-// let guessesLeft = 10;
-// let length = 15;
-// let guessUrl = "http://int-sys.usr.space/hangman/games/5530534a4274/guesses";
-// let gameStatus = 'active';
-// let lettersGuessed = {};
-//
-// letterGuesser(JsonDict, guessUrl);
-
-// module.exports =
-// length, gameStatus, lettersGuessed, guessesLeft,
 module.exports = function letterGuesser(wordsHash, length,
    gameStatus, lettersGuessed, guessesLeft, url, i = 0) {
   console.log("<------ starting letterGuesser ------>");
@@ -98,22 +84,17 @@ module.exports = function letterGuesser(wordsHash, length,
       // if guessed wrong; keep guessing
       else {
         guessesLeft--;
-        // none of the words match -> new word!
-        // if (Object.keys(newWords).length === 0 &&
-        //  currentWord === '_'.repeat(length)) {
-        //   guessDownOxfordList(lettersGuessed, url);
-        // }
-        // else {
-          while (lettersGuessed[freqList[i]]) {
-            i++;
-          }
-          if (i >= freqList.length ) {
-            console.log('out of freqList guesses');
-            guessDownOxfordList(lettersGuessed, url);
-          } else {
-            request.post({url: url, formData: {char: freqList[i]}}, cb);
-          }
-        // }
+
+        while (lettersGuessed[freqList[i]]) {
+          i++;
+        }
+
+        if (i >= freqList.length ) {
+          console.log('out of freqList guesses');
+          guessDownOxfordList(lettersGuessed, url);
+        } else {
+          request.post({url: url, formData: {char: freqList[i]}}, cb);
+        }
       }
     }
   );
@@ -195,3 +176,18 @@ function findLettersIdx(currentWord, wordLength) {
 
   return lettersIdx;
 }
+
+// vars for testing
+// const JsonDict = require(`./dictionary-json/15-letter.json`);
+// console.log('words hash created');
+//
+// let guessesLeft = 10;
+// let length = 15;
+// let guessUrl = "http://int-sys.usr.space/hangman/games/5530534a4274/guesses";
+// let gameStatus = 'active';
+// let lettersGuessed = {};
+//
+// letterGuesser(JsonDict, guessUrl);
+
+// module.exports =
+// length, gameStatus, lettersGuessed, guessesLeft,
