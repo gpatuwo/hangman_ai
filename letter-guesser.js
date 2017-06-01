@@ -124,6 +124,7 @@ function filterWords(wordsHash, currentWord, wordLength) {
           word[idx] !== currentWord[idx]) {
           shouldInsertWord = false;
         } else {
+          shouldInsertWord = false;
           // skip to next word;
           break;
         }
