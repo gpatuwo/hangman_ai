@@ -5,17 +5,17 @@
 
 'use strict';
 
-// const createHashDictionary =
-// require('./dictionary-builders/dictionary-hash-builder.js');
-const frequencyGenerator = require('./frequency-generator.js');
 const request = require('request');
 const fs = require('fs');
 const config = require('./config');
-// const letterGuesser = require('./letter-guesser.js');
+const letterGuesser = require('./letter-guesser.js');
 
-let gameId, length, freqList, jsonDictionary, nextWordKey;
 
 function startGame() {
+
+  let gameId, length, freqList, jsonDictionary, nextWordKey;
+  let gameStatus = 'active', lettersGuessed = {}, guessesLeft = 10;
+
   // request word
   let url = "http://int-sys.usr.space/hangman/games/";
 
@@ -28,6 +28,8 @@ function startGame() {
       let data = JSON.parse(body);
       gameId = data.gameId;
       length = data.word.length;
+      gameStatus = data.status;
+      guessesLeft = data.guessesLeft;
       console.log('new game request body:', data);
 
 
@@ -39,7 +41,8 @@ function startGame() {
 
       url += `${gameId}/guesses`;
 
-      // letterGuesser(jsonDictionary, url);
+      letterGuesser(jsonDictionary, length, gameStatus,
+         lettersGuessed, guessesLeft, url);
     }
   );
 }
