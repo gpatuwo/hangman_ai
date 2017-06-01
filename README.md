@@ -1,6 +1,6 @@
 # Hangman Solver
 
-## Architecture
+## Structure
 Server-side
 
 1. dictionary builder script: to fetch a ton of words from API. stored words in txt files
@@ -33,6 +33,7 @@ Front-end
     );
   - red: #ff3333
   - text all in roboto-light
+  - add/remove listeners
 
 ## Process
 ### Letter Frequency

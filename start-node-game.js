@@ -10,7 +10,13 @@ const fs = require('fs');
 const config = require('./config');
 const letterGuesser = require('./letter-guesser.js');
 
-
+class Game {
+  constructor() {
+    // this.everythng below
+    // let gameId, length, freqList, jsonDictionary, nextWordKey;
+    // let gameStatus = 'active', lettersGuessed = {}, guessesLeft = 10;
+  }
+}
 function startGame() {
 
   let gameId, length, freqList, jsonDictionary, nextWordKey;
