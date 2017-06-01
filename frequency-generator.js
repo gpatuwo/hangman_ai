@@ -1,8 +1,10 @@
+// analyzes given words, returns frequency list array
+
 'use strict';
 
 const fs = require('fs');
 
-function frequencyGenerator(words, length) {
+module.exports = function frequencyGenerator(words, length) {
 
   // words can be 'initialize dictionary' or already object
   if (typeof words === 'string') {
@@ -12,9 +14,10 @@ function frequencyGenerator(words, length) {
   // loop through words to create lettersCount hash
   let lettersCount = countLetters(words, length);
 
-  console.log(lettersCount);
   // reads LettersCount and puts letters in order
-  let frequencyList = new Array(26);
+  let frequencyList = Object.keys(lettersCount).sort( (a,b) => lettersCount[b] - lettersCount[a]);
+
+  return frequencyList;
 }
 
 
@@ -40,7 +43,7 @@ function countLetters(words, length) {
 
       for (var i = 0; i < length; i++) {
         let letter = word[i];
-        
+
         // create or add to letter's count
         countHash[letter] ? countHash[letter]++ : countHash[letter] = 1;
       }
@@ -49,5 +52,3 @@ function countLetters(words, length) {
 
   return countHash;
 }
-
-frequencyGenerator("words", 1);
