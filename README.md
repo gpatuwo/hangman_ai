@@ -73,7 +73,10 @@ freq-gen sequence:
 
 2. json dictionary builder: to convert text files usable a data type for determine initial frequency list for each length dictionary
 
+hash dictionary builder: convert json dictionaries into exportable js objects
+
 3. frequency generator:
+- converts json length dictionary into object 
 - find/save initial frequency for each length dictionary
 - re-used to gen order of letter guesses as
 

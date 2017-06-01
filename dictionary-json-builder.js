@@ -28,7 +28,11 @@ function createInitialJsonDictionary() {
 
     let endPath =  `./dictionary-hash/${length}-letter.json`;
 
-    // have to stringify hash bc of writeFile can only export as string, buffer or arr
+    /*
+    have to stringify hash bc of writeFile can only export as string, buffer or arr
+
+    stringify also allows to maintain structure of object
+    */
     fs.writeFileSync(endPath, JSON.stringify(wordsHash, null, 2) , 'utf-8');
 
     // loop thru length dictionary files
