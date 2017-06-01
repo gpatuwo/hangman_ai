@@ -18,7 +18,7 @@ module.exports = function frequencyGenerator(words, length) {
   let frequencyList = Object.keys(lettersCount).sort( (a,b) => lettersCount[b] - lettersCount[a]);
 
   return frequencyList;
-}
+};
 
 
 // convert json dictionary into object
