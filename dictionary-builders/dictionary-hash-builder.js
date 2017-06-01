@@ -1,4 +1,5 @@
 // convert json dictionary into object
+// maybe not necessary!!! can require json directly :D 
 
 'use strict';
 

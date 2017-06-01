@@ -5,8 +5,8 @@
 
 'use strict';
 
-const createHashDictionary =
-require('./dictionary-builders/dictionary-hash-builder.js');
+// const createHashDictionary =
+// require('./dictionary-builders/dictionary-hash-builder.js');
 const frequencyGenerator = require('./frequency-generator.js');
 const request = require('request');
 const fs = require('fs');
@@ -17,6 +17,7 @@ let gameId, length, freqList;
 function startGame() {
   // request word
   let url = "http://int-sys.usr.space/hangman/games/";
+
   request.post({url: url, formData: {email: config.email}},
     (error, response, body) => {
       if (error) return console.log('post request error for new word:', error);
@@ -28,10 +29,14 @@ function startGame() {
       length = data.word.length;
       console.log('new game request body:', data);
 
-      let words = createHashDictionary(length);
+      let jsonDictionary = require(`./dictionary-json/${length}-letter.json`);
+
+      // saving this variable for easier insertion into dict
+      const nextWordKey = Object.keys(jsonDictionary).length;
+      // let words = createHashDictionary(length);
       console.log('words hash created');
 
-      freqList = frequencyGenerator(words, length);
+      freqList = frequencyGenerator(jsonDictionary, length);
       console.log('freqList:', JSON.stringify(freqList));
 
       url += `${gameId}/guesses`;
@@ -50,14 +55,15 @@ function startGame() {
 // startGame();
 
 
-let words = createHashDictionary(10);
-console.log('words hash created');
+// let words = createHashDictionary(10);
+// console.log('words hash created');
 
-freqList = frequencyGenerator(words, 10);
+// freqList = frequencyGenerator(words, 10);
 
 let guessesLeft = 10;
 
-function feedInitialLetters(url, i = 0) {
+// guessing from static freq list
+function feedStaticLetters(url, i = 0) {
   console.log(`guessing letter: ${freqList[i]}`);
   request.post({url: url, formData: {char: freqList[i]}},
     function cb(error, response, body) {
@@ -69,7 +75,10 @@ function feedInitialLetters(url, i = 0) {
       // loop gets first letter correct
       if (data.guessesLeft === 10) {
         // break out of loop
-        return console.log('breaking out of loop');
+        console.log('jumping into feedCustomLetters');
+        let word = data.word;
+        filterWords(words, word, length);
+        feedCustomLetters(url);
       } else if (data.status === 'inactive') {
         return console.log('none of the letters work :( )');
       } else {
@@ -80,6 +89,32 @@ function feedInitialLetters(url, i = 0) {
   );
 }
 
+// returns new (or reassigns?)words obj
+function filterWords(wordsHash, currentWord, wordLength) {
+  // parse currentWord
+  let positions = findLettersIdx(currentWord);
+
+  // itr through wordsHash to find matches
+  for (var key in wordsHash) {
+    if (wordsHash.hasOwnProperty(key)) {
+      let word = wordsHash[key];
+      for (let i = 0; i < length; i++) {
+
+      }
+    }
+  }
+}
+
+function findLettersIdx(currentWord) {
+  let positions = {};
+
+}
+
+function feedCustomLetters() {
+
+}
+
 let guessUrl = "http://int-sys.usr.space/hangman/games/9c393441c596/guesses";
 
-feedInitialLetters(guessUrl);
+// feedStaticLetters(guessUrl);
+// feedCustomLetters(guessUrl);
