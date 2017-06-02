@@ -36,6 +36,44 @@ Front-end
   - text all in roboto-light
   - add/remove listeners
 
+# Guessing Scenarios
+guessing first letter
+- setupGame establishes currentDictionary, freqList
+- playRound is invoked
+  - filterWords returns (bc setupGame already initialized)
+  - updateFreqList returns
+  - updates lastGuessedLetter to be first letter in freqList
+  - makes post request to guess lastGuessedLetter
+    - pushes letter to lettersGuessed
+    - updates responseBody
+    - if responseBody.status is active,
+      - then playRound()
+      - else game over, log responseBody
+
+first letter is correct
+- filterWords parses responseWord to update currentDictionary
+- new freqList
+- guess first el of freqList
+
+first letter/s is not correct
+- filterWords eliminates words that contain the last letter guessed
+- updateFreqList returns same list w/o already guessed letters
+- guess first el of this new freqList
+
+subsequent guessed letter is not correct
+- c
+
+one word left in currentDictionary:
+- freqList this word
+- guess word
+- if wrong, then
+  - filterWords checks  guesses match
+  - updateFreqList moves on to oxford list
+- if right, keep going down freqList
+
+no words left in currentDictionary:
+- go down oxford list
+
 ## Process
 ### Letter Frequency
 As someone who has played Hangman since first grade, I've always known to start with the letter 'e'. Memories of past games inspired me to look into letter frequencies. In my research of this topic, several tables were frequently referenced:
