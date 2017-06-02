@@ -260,11 +260,17 @@ class Game {
   // figures out what to do w/word
   handleWord(data){
     console.log("<------ handling word ------>");
-    // figure out what the word is
 
+    // figure out what the word is
+    let firstMsgWord = data.msg.split(" ").shift();
+    let lastMsgWord = data.msg.split(" ").pop();
+
+    let word = firstMsgWord === 'Congrats!' ?
+      data.word : lastMsgWord;
 
     if (this.isNewWord) {
       console.log('new word!!! gonna save it');
+      this.saveWord(word);
     } else {
       console.log('yay this word was in my dictionary!');
     }
@@ -273,6 +279,16 @@ class Game {
   saveWord(word){
     // uses jsonDictionary and nextWordKey
     // to push word to correct json length dict
+    let path = `./dictionary-txt/${this.wordLength}-letter-words.txt`;
+
+    let newDict = this.jsonDictionary[this.nextWordKey] = word;
+
+    fs.writeFile(path, JSON.stringify(newDict),
+      (err) => {
+        if (err) return console.log(err);
+
+        console.log(`I've saved ${word} to ${path}`);
+      });
   }
 }
 
