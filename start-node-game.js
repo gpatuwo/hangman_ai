@@ -21,8 +21,6 @@ class Game {
     this.responseBody = {};
     this.responseWord = '';
 
-    this.playRound = this.playRound.bind(this);
-
     this.setupGame();
   }
 
@@ -61,7 +59,6 @@ class Game {
 
   playRound(){
     console.log("<------ starting letterGuesser ------>");
-    this.guessLetterCallback = this.guessLetterCallback.bind(this);
 
     // populate/reassign currentDictionary via filterWords(responseWord)
     this.filterWords();
@@ -73,27 +70,29 @@ class Game {
 
     // last letter guessed = freqList[0];
     this.lastGuessedLetter = this.freqList[0];
+    this.lettersGuessed[this.lastGuessedLetter] = true;
     console.log('guessing letter:', this.lastGuessedLetter);
 
     request.post({url: this.url, formData: {char: this.lastGuessedLetter}},
-      this.guessLetterCallback());
-  }
+      // this.guessLetterCallback()
+      (error, response, body) => {
+        let data = JSON.parse(body);
+        if (data.error) console.log('guessing error:', data.error);
 
-  guessLetterCallback(error, response, body){
-    let data = JSON.parse(body);
-    if (data.error) console.log('guessing error:', data.error);
-    console.log('response:', data);
+        console.log('response:', data);
 
-    this.responseBody = data;
-    this.responseWord = data.word;
+        this.responseBody = data;
+        this.responseWord = data.word;
 
-    if (data.status === 'inactive') {
-      // BREAKS OUT OF FOR LOOP! :D
-      this.handleWord(data);
-    } else {
-      console.log("making another guess");
-      this.playRound();
-    }
+        if (data.status === 'inactive') {
+          // BREAKS OUT OF FOR LOOP! :D
+          this.handleWord(data);
+        } else {
+          console.log("making another guess");
+          this.playRound();
+        }
+      }
+    );
   }
 
   filterWords(){
