@@ -211,15 +211,20 @@ class Game {
 
 
   updateFreqList(){
-    // if currentDictionary is empty,
-      // use Oxford List
-      // assign isNewWord = true;
+    let frequencyList;
+    let dictionaryLength = Object.keys(this.currentDictionary).length;
 
-    // find currentDictionary's frequency list
-    let lettersCountHash = this.countLetters();
-    let frequencyList =
-      Object.keys(lettersCountHash).sort(
-        (a,b) => lettersCountHash[b] - lettersCountHash[a]);
+    if (dictionaryLength === 0) {
+      this.isNewWord = true;
+      frequencyList = [ 'e', 'a', 'r', 'i', 'o', 't', 'n',
+       's', 'l', 'c', 'u', 'd', 'p', 'm', 'h', 'g', 'b',
+        'f', 'y', 'w', 'k', 'v', 'x', 'z', 'j', 'q' ];
+    } else {
+      let lettersCountHash = this.countLetters();
+      frequencyList =
+        Object.keys(lettersCountHash).sort(
+          (a,b) => lettersCountHash[b] - lettersCountHash[a]);
+    }
 
     // filter out lettersGuessed
     this.freqList = frequencyList.filter(
@@ -257,9 +262,12 @@ class Game {
     console.log("<------ handling word ------>");
     // figure out what the word is
 
-    // if isNewWord is false
-      // log 'yay this word was in my dictionary!
-    // else saveWord(word)
+
+    if (this.isNewWord) {
+      console.log('new word!!! gonna save it');
+    } else {
+      console.log('yay this word was in my dictionary!');
+    }
   }
 
   saveWord(word){
