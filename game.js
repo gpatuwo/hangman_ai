@@ -1,3 +1,5 @@
+// used for front-end logic, need human input to keep guessing
+
 'use strict';
 
 const request = require('request');

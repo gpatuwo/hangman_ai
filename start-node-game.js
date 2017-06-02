@@ -2,44 +2,112 @@
 
 const request = require('request');
 const fs = require('fs');
-const config = require('./config');
-const letterGuesser = require('./letter-guesser.js');
 
+class Game {
+  constructor(){
+    this.gameId = '';
+    this.wordLength = 0;
+    this.jsonDictionary = {};
+    this.nextWordKey = '';
+    this.newWord = false;
+    this.gameStatus = 'active';
+    this.lettersGuessed = {};
+    this.guessesLeftBeforeRequest = 10;
+    this.url = "http://int-sys.usr.space/hangman/games/";
 
-function startGame() {
+    this.currentDictionary = {};
+    this.freqList = [];
+    this.lastGuessedLetter = '';
+    this.responseBody = {};
+    this.responseWord = '';
 
-  let gameId, length, freqList, jsonDictionary, nextWordKey;
-  let gameStatus = 'active', lettersGuessed = {}, guessesLeft = 10;
+    this.setupGame();
+  }
 
-  // request word
-  let url = "http://int-sys.usr.space/hangman/games/";
+  setupGame(){
+    // fe: remove event listener to guess-button to disable it
 
-  request.post({url: url, formData: {email: config.email}},
-    (error, response, body) => {
-      if (error) return console.log('post request error for new word:', error);
+    // make post request. in cb:
+      // updates responseBody
+      // update ivars, incl freqList via updateFreqList();
+      // fe: re-enable guess-button
+      // node: playRound()
+  }
 
-      console.log("<------ starting new game ------>");
+  playRound(){
+    // populate/reassign currentDictionary via filterWords(responseWord)
 
-      let data = JSON.parse(body);
-      gameId = data.gameId;
-      length = data.word.length;
-      gameStatus = data.status;
-      guessesLeft = data.guessesLeft;
-      console.log('new game request body:', data);
+    // updateFreqList
 
+    // last letter guessed = freqList[0];
 
-      jsonDictionary = require(`./dictionary-json/${length}-letter.json`);
-      // saving this variable for easier insertion into dict
-      nextWordKey = Object.keys(jsonDictionary).length;
-      // let words = createHashDictionary(length);
-      console.log('words hash created');
+    // fe: disable guess-button
 
-      url += `${gameId}/guesses`;
+    // make request. in cb:
+      // push letter to lettersGuessed
+      // update responseBody
+      // fe: re-enable guess-button
+      // node: loop playRound until game over
+        // if over, log responseBody then handleWord()
+  }
 
-      letterGuesser(jsonDictionary, length, gameStatus,
-         lettersGuessed, guessesLeft, url);
-    }
-  );
+  filterWords(){
+    // parse responseWord via findLettersIdx
+
+    // if currentDictionary same as jsonDictionary, then return out
+
+    // if currentDictionary is empty, return
+
+    // if there's one word and guessed letter that didn't work,
+      // reassign currentDictionary = {}
+
+    // itr through currentDictionary to filter
+      // if guess difference the same (aka guessed correct letter)
+        // filter for words that match responseWord
+      // else guessed incorrectly
+        // filter OUT words that contain last guessed letter
+
+  }
+
+  findLettersIdx(){
+    // returns array of indeces where there are letters
+  }
+
+  pickLetter(){
+    // figure out if should guess
+    // guessDifference =
+      // guessesLeftBeforeRequest -   this.responseBody.guessesLeft
+
+    // update guessesLeftBeforeRequest
+
+    // return freqList[guessDifference]
+  }
+
+  updateFreqList(){
+    // if lettersGuessed is empty, return
+
+    // if currentDictionary is empty,
+      // use Oxford List
+      // assign newWord = true;
+
+    // looks at currentDictionary to find arr of letters in order of frequency
+
+    // diff list with lettersGuessed
+  }
+
+  // figures out what to do w/word
+  handleWord(){
+    // figure out what the word is
+
+    // if newWord is false
+      // log 'yay this word was in my dictionary!
+    // else saveWord(word)
+  }
+
+  saveWord(word){
+    // uses jsonDictionary and nextWordKey
+    // to push word to correct json length dict
+  }
 }
 
-startGame();
+new Game();
