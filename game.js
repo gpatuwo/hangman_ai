@@ -86,7 +86,7 @@ class Game {
   }
 
   updateFreqList(){
-    // if lettersGuessed is empty, return
+    // if this.lastGuessedLetter === '' is empty, return
 
     // if currentDictionary is empty,
       // use Oxford List

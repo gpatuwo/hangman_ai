@@ -9,7 +9,7 @@ class Game {
     this.wordLength = 0;
     this.jsonDictionary = {};
     this.nextWordKey = '';
-    this.newWord = false;
+    this.isNewWord = false;
     this.gameStatus = 'active';
     this.lettersGuessed = {};
     this.guessesLeftBeforeRequest = 10;
@@ -25,8 +25,35 @@ class Game {
   }
 
   setupGame(){
-    // fe: remove event listener to guess-button to disable it
+    let email = 'hangman@gmail.com';
 
+    request.post({url: this.url, formData: {email: email}},
+      (error, response, body) => {
+      if (error) return console.log('post request error for new word:', error);
+
+      console.log("<------ starting new game ------>");
+
+      let data = JSON.parse(body);
+      this.responseBody = data;
+      this.gameId = data.gameId;
+      this.wordLength = data.word.length;
+
+      console.log('responseBody:', this.responseBody);
+
+      this.jsonDictionary =
+        require(`./dictionary-json/${this.wordLength}-letter.json`);
+      this.nextWordKey = Object.keys(this.jsonDictionary).length;
+
+      this.currentDictionary =
+       require(`./dictionary-json/${this.wordLength}-letter.json`);
+      this.updateFreqList();
+
+      console.log('initial freqList:', JSON.stringify(this.freqList));
+
+      this.url += `${this.gameId}/guesses`;
+
+      //playRound();
+    });
     // make post request. in cb:
       // updates responseBody
       // update ivars, incl freqList via updateFreqList();
@@ -84,22 +111,53 @@ class Game {
   }
 
   updateFreqList(){
-    // if lettersGuessed is empty, return
+    // if this.lastGuessedLetter === '' is empty, return
 
     // if currentDictionary is empty,
       // use Oxford List
-      // assign newWord = true;
+      // assign isNewWord = true;
 
-    // looks at currentDictionary to find arr of letters in order of frequency
-
-    // diff list with lettersGuessed
+    // find currentDictionary's frequency list
+    let lettersCountHash = this.countLetters();
+    let frequencyList =
+      Object.keys(lettersCountHash).sort(
+        (a,b) => lettersCountHash[b] - lettersCountHash[a]);
+    
+    // filter out lettersGuessed
+    this.freqList = frequencyList.filter(
+      letter => !(this.lettersGuessed[letter]));
   }
+
+  countLetters(){
+    let countHash = {};
+
+    for (var key in this.currentDictionary) {
+      if (this.currentDictionary.hasOwnProperty(key)) {
+        let word = this.currentDictionary[key];
+
+        for (var i = 0; i < word.length; i++) {
+          let letter = word[i];
+
+          // create or add to letter's count
+          if (countHash[letter]) {
+            countHash[letter]++;
+          } else {
+            countHash[letter] = 1;
+          }
+        }
+      }
+    }
+
+    return countHash;
+  }
+  /* runtime: O(n * m), where n = num of words in list, m = word length
+  space: O(1), always <= obj of length 26 */
 
   // figures out what to do w/word
   handleWord(){
     // figure out what the word is
 
-    // if newWord is false
+    // if isNewWord is false
       // log 'yay this word was in my dictionary!
     // else saveWord(word)
   }
