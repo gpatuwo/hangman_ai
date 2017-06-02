@@ -35,6 +35,7 @@ class Game {
 
       let data = JSON.parse(body);
       this.responseBody = data;
+      this.responseWord = data.word;
       this.gameId = data.gameId;
       this.wordLength = data.word.length;
 
@@ -54,17 +55,16 @@ class Game {
 
       //playRound();
     });
-    // make post request. in cb:
-      // updates responseBody
-      // update ivars, incl freqList via updateFreqList();
-      // fe: re-enable guess-button
-      // node: playRound()
   }
 
   playRound(){
     // populate/reassign currentDictionary via filterWords(responseWord)
+    this.filterWords();
+    console.log('filtered words:', JSON.stringify(this.currentDictionary));
 
     // updateFreqList
+    this.updateFreqList();
+    console.log('updated freqList:', this.freqList);
 
     // last letter guessed = freqList[0];
 
@@ -79,36 +79,98 @@ class Game {
   }
 
   filterWords(){
-    // parse responseWord via findLettersIdx
+    let dictionaryLength = Object.keys(this.currentDictionary).length;
+    let didWrongGuess = this.didWrongGuess();
 
-    // if currentDictionary same as jsonDictionary, then return out
+    // if it's the first guess
+    if (dictionaryLength === parseInt(this.nextWordKey)) return;
 
-    // if currentDictionary is empty, return
+    // if no words in dict match
+    if (dictionaryLength === 0) return;
 
-    // if there's one word and guessed letter that didn't work,
-      // reassign currentDictionary = {}
+    // if there's one word and guessed a letter that didn't work,
+    if (dictionaryLength === 1 && didWrongGuess) {
+      this.currentDictionary = {};
+      return;
+    }
 
-    // itr through currentDictionary to filter
-      // if guess difference the same (aka guessed correct letter)
-        // filter for words that match responseWord
-      // else guessed incorrectly
-        // filter OUT words that contain last guessed letter
 
+    if (didWrongGuess) {
+      this.filterOutWords();
+    } else {
+      let newlettersIdx = this.findNewLettersIdx();
+      this.filterForWords(newlettersIdx);
+    }
   }
 
-  findLettersIdx(){
-    // returns array of indeces where there are letters
+  // GET RID of words that do have lastGuessedLetter
+  filterOutWords(){
+    let filteredWords = {};
+
+    for (var key in this.currentDictionary){
+      if (this.currentDictionary.hasOwnProperty(key)) {
+        let word = this.currentDictionary[key];
+
+        // save word if does not have lastGuessedLetter
+        if (word.indexOf(this.lastGuessedLetter) === -1) {
+          filteredWords[key] = word;
+        }
+      }
+    }
+
+    this.currentDictionary = filteredWords;
   }
 
-  pickLetter(){
-    // figure out if should guess
-    // guessDifference =
-      // guessesLeftBeforeRequest -   this.responseBody.guessesLeft
+  // KEEP words that do have lastGuessedLetter in newlettersIdx
+  filterForWords(newlettersIdx){
+    let filteredWords = {};
 
-    // update guessesLeftBeforeRequest
+    for (var key in this.currentDictionary) {
+      if (this.currentDictionary.hasOwnProperty(key)) {
+        let word = this.currentDictionary[key];
 
-    // return freqList[guessDifference]
+        let shouldInsertWord = false;
+
+        for (var i = 0; i < newlettersIdx.length; i++) {
+          let idx = newlettersIdx[i];
+          let letter = word[idx];
+
+          if (letter === this.lastGuessedLetter) {
+            shouldInsertWord = true;
+          } else if (letter !== this.lastGuessedLetter &&
+            i === newlettersIdx.length - 1) {
+            shouldInsertWord = false;
+          } else {
+            shouldInsertWord = false;
+            // skip to next word;
+            break;
+          }
+        }
+
+        // here means went thru word and all letters match
+        if (shouldInsertWord === true) filteredWords[key] = word;
+      }
+    }
+
+    this.currentDictionary = filteredWords;
   }
+
+  didWrongGuess(){
+    return this.guessesLeftBeforeRequest > this.responseBody.guessesLeft;
+  }
+
+  findNewLettersIdx(){
+    let lettersIdx = [];
+
+    for (let i = 0; i < this.wordLength; i++){
+      let letter = this.responseWord[i];
+
+      if (letter !== '_' && !(this.lettersGuessed[letter])) lettersIdx.push(i);
+    }
+
+    return lettersIdx;
+  }
+
 
   updateFreqList(){
     // if this.lastGuessedLetter === '' is empty, return
@@ -122,7 +184,7 @@ class Game {
     let frequencyList =
       Object.keys(lettersCountHash).sort(
         (a,b) => lettersCountHash[b] - lettersCountHash[a]);
-    
+
     // filter out lettersGuessed
     this.freqList = frequencyList.filter(
       letter => !(this.lettersGuessed[letter]));
@@ -152,6 +214,7 @@ class Game {
   }
   /* runtime: O(n * m), where n = num of words in list, m = word length
   space: O(1), always <= obj of length 26 */
+
 
   // figures out what to do w/word
   handleWord(){
