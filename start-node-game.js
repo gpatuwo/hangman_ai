@@ -60,26 +60,23 @@ class Game {
   }
 
   playRound(){
+    console.log("<------ starting letterGuesser ------>");
+    this.guessLetterCallback = this.guessLetterCallback.bind(this);
+
     // populate/reassign currentDictionary via filterWords(responseWord)
     this.filterWords();
     console.log('currentDictionary:', JSON.stringify(this.currentDictionary));
 
     // updateFreqList
     this.updateFreqList();
-    console.log('updated freqList:', this.freqList);
+    console.log('updated freqList:', JSON.stringify(this.freqList));
 
     // last letter guessed = freqList[0];
     this.lastGuessedLetter = this.freqList[0];
     console.log('guessing letter:', this.lastGuessedLetter);
 
-    // make request. in cb:
-      // push letter to lettersGuessed
-      // update responseBody
-      // fe: re-enable guess-button
-      // node: loop playRound until game over
-        // if over, log responseBody then handleWord()
     request.post({url: this.url, formData: {char: this.lastGuessedLetter}},
-       this.guessLetterCallback);
+      this.guessLetterCallback());
   }
 
   guessLetterCallback(error, response, body){
@@ -89,6 +86,14 @@ class Game {
 
     this.responseBody = data;
     this.responseWord = data.word;
+
+    if (data.status === 'inactive') {
+      // BREAKS OUT OF FOR LOOP! :D
+      this.handleWord(data);
+    } else {
+      console.log("making another guess");
+      this.playRound();
+    }
   }
 
   filterWords(){
@@ -232,7 +237,8 @@ class Game {
 
 
   // figures out what to do w/word
-  handleWord(){
+  handleWord(data){
+    console.log("<------ handling word ------>");
     // figure out what the word is
 
     // if isNewWord is false
