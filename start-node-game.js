@@ -185,7 +185,6 @@ class Game {
 
         // here means went thru word and all letters match
         if (shouldInsertWord === true) {
-          console.log('inserting word');
           filteredWords[key] = word;}
       }
     }
@@ -279,7 +278,7 @@ class Game {
   saveWord(word){
     // uses jsonDictionary and nextWordKey
     // to push word to correct json length dict
-    let path = `./dictionary-txt/${this.wordLength}-letter-words.txt`;
+    let path = `./dictionary-json/${this.wordLength}-letter.json`;
 
     let newDict = this.jsonDictionary[this.nextWordKey] = word;
 
