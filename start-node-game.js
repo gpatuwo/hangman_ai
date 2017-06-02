@@ -280,7 +280,11 @@ class Game {
     // to push word to correct json length dict
     let path = `./dictionary-json/${this.wordLength}-letter.json`;
 
-    let newDict = this.jsonDictionary[this.nextWordKey] = word;
+    let wordArr = word.split('');
+
+    this.jsonDictionary[this.nextWordKey] = wordArr;
+
+    let newDict = this.jsonDictionary;
 
     fs.writeFile(path, JSON.stringify(newDict),
       (err) => {
