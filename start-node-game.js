@@ -16,6 +16,10 @@ class Game {
     // let gameId, length, freqList, jsonDictionary, nextWordKey;
     // let gameStatus = 'active', lettersGuessed = {}, guessesLeft = 10;
   }
+
+  startGame(){
+    //
+  }
 }
 function startGame() {
 

@@ -16,5 +16,6 @@ module.exports = function handleWord(msg, word){
 };
 
 function saveWord(word){
+  // complete after refactoring so have access to orig Json dict
 
 }
