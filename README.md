@@ -2,6 +2,41 @@
 
 To run this Node.js game, download this repo and run `node game.js` in your terminal. The log will show how the AI is working to guess the hangman word, and also whether or not it is able to guess the word.
 
+Here's an example log:
+~~~~
+<------ starting new game ------>
+responseBody: { gameId: 'f164c52b3283', word: '_________', guessesLeft: 10 }
+initial freqList: ["e","i","a","r","n","o","t","s","l","c","u","d","m","p","h","g","y","b","f","k","v","w","z","x","j","q"]
+<------ starting round ------>
+...
+<------ guessing another letter ------>
+filtering Words
+didWrongGuess: false
+newlettersIdx: [ 3 ]
+<------ filterForWords ------>
+updated freqList: ["l","d"]
+guessing letter: l
+response: { gameId: 'f164c52b3283',
+  status: 'active',
+  word: 'heral_ize',
+  guessesLeft: 8,
+  msg: 'You have guessed l' }
+<------ guessing another letter ------>
+filtering Words
+didWrongGuess: false
+newlettersIdx: [ 4 ]
+<------ filterForWords ------>
+updated freqList: ["d"]
+guessing letter: d
+response: { gameId: 'f164c52b3283',
+  status: 'inactive',
+  word: 'heraldize',
+  guessesLeft: 0,
+  msg: 'Congrats! You have solved this hangman!' }
+<------ handling word ------>
+yay this word was in my dictionary!
+~~~~
+
 ### How It Works
 On a high level, the script makes an API call to get a new hangman word and uses its own dictionary to figure out what letters to guess by constructing letter frequency lists. It gets smarter for next time, by saving new words into its own dictionary.
 

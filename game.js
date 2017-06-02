@@ -63,7 +63,6 @@ class Game {
 
     // populate/reassign currentDictionary via filterWords(responseWord)
     this.filterWords();
-    console.log('currentDictionary:', JSON.stringify(this.currentDictionary));
 
     // updateFreqList
     this.updateFreqList();
@@ -270,7 +269,7 @@ class Game {
       data.word : lastMsgWord;
 
     if (this.isNewWord) {
-      console.log('new word!!! gonna save it');
+      console.log('this is a new word!!!');
       this.saveWord(word);
     } else {
       console.log('yay this word was in my dictionary!');
@@ -292,7 +291,7 @@ class Game {
       (err) => {
         if (err) return console.log(err);
 
-        console.log(`I've saved ${word} to ${path}`);
+        console.log(`${word} has been added to ${path}`);
       });
   }
 }
