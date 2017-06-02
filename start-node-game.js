@@ -21,6 +21,8 @@ class Game {
     this.responseBody = {};
     this.responseWord = '';
 
+    this.playRound = this.playRound.bind(this);
+
     this.setupGame();
   }
 
@@ -53,22 +55,22 @@ class Game {
 
       this.url += `${this.gameId}/guesses`;
 
-      //playRound();
+      this.playRound();
     });
   }
 
   playRound(){
     // populate/reassign currentDictionary via filterWords(responseWord)
     this.filterWords();
-    console.log('filtered words:', JSON.stringify(this.currentDictionary));
+    console.log('currentDictionary:', JSON.stringify(this.currentDictionary));
 
     // updateFreqList
     this.updateFreqList();
     console.log('updated freqList:', this.freqList);
 
     // last letter guessed = freqList[0];
-
-    // fe: disable guess-button
+    this.lastGuessedLetter = this.freqList[0];
+    console.log('guessing letter:', this.lastGuessedLetter);
 
     // make request. in cb:
       // push letter to lettersGuessed
@@ -76,11 +78,24 @@ class Game {
       // fe: re-enable guess-button
       // node: loop playRound until game over
         // if over, log responseBody then handleWord()
+    request.post({url: this.url, formData: {char: this.lastGuessedLetter}},
+       this.guessLetterCallback);
+  }
+
+  guessLetterCallback(error, response, body){
+    let data = JSON.parse(body);
+    if (data.error) console.log('guessing error:', data.error);
+    console.log('response:', data);
+
+    this.responseBody = data;
+    this.responseWord = data.word;
   }
 
   filterWords(){
     let dictionaryLength = Object.keys(this.currentDictionary).length;
     let didWrongGuess = this.didWrongGuess();
+
+    this.guessesLeftBeforeRequest = this.responseBody.guessesLeft;
 
     // if it's the first guess
     if (dictionaryLength === parseInt(this.nextWordKey)) return;
