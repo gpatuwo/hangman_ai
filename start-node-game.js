@@ -14,6 +14,7 @@ class Game {
     this.lettersGuessed = {};
     this.guessesLeftBeforeRequest = 10;
     this.url = "http://int-sys.usr.space/hangman/games/";
+    this.firstGuess = true;
 
     this.currentDictionary = {};
     this.freqList = [];
@@ -53,12 +54,12 @@ class Game {
 
       this.url += `${this.gameId}/guesses`;
 
+      console.log("<------ starting round ------>");
       this.playRound();
     });
   }
 
   playRound(){
-    console.log("<------ starting letterGuesser ------>");
 
     // populate/reassign currentDictionary via filterWords(responseWord)
     this.filterWords();
@@ -67,6 +68,8 @@ class Game {
     // updateFreqList
     this.updateFreqList();
     console.log('updated freqList:', JSON.stringify(this.freqList));
+
+    this.firstGuess = false;
 
     // last letter guessed = freqList[0];
     this.lastGuessedLetter = this.freqList[0];
@@ -88,7 +91,7 @@ class Game {
           // BREAKS OUT OF FOR LOOP! :D
           this.handleWord(data);
         } else {
-          console.log("making another guess");
+          console.log("<------ guessing another letter ------>");
           this.playRound();
         }
       }
@@ -97,33 +100,45 @@ class Game {
 
   filterWords(){
     let dictionaryLength = Object.keys(this.currentDictionary).length;
-    let didWrongGuess = this.didWrongGuess();
 
+    let didWrongGuess = this.didWrongGuess();
     this.guessesLeftBeforeRequest = this.responseBody.guessesLeft;
 
     // if it's the first guess
-    if (dictionaryLength === parseInt(this.nextWordKey)) return;
+    if (this.firstGuess) {
+      console.log('first guess');
+      return;
+    }
+
 
     // if no words in dict match
-    if (dictionaryLength === 0) return;
+    if (dictionaryLength === 0) {
+      console.log('no words in dict match');
+      return;
+    }
 
     // if there's one word and guessed a letter that didn't work,
     if (dictionaryLength === 1 && didWrongGuess) {
+      console.log("if there's one word and guessed a letter that didn't work");
       this.currentDictionary = {};
       return;
     }
 
+    console.log('filtering Words');
+    console.log('didWrongGuess:', didWrongGuess);
 
     if (didWrongGuess) {
       this.filterOutWords();
     } else {
       let newlettersIdx = this.findNewLettersIdx();
+      console.log('newlettersIdx:', newlettersIdx);
       this.filterForWords(newlettersIdx);
     }
   }
 
   // GET RID of words that do have lastGuessedLetter
   filterOutWords(){
+    console.log("<------ filterOutWords ------>");
     let filteredWords = {};
 
     for (var key in this.currentDictionary){
@@ -142,11 +157,13 @@ class Game {
 
   // KEEP words that do have lastGuessedLetter in newlettersIdx
   filterForWords(newlettersIdx){
+    console.log("<------ filterForWords ------>");
     let filteredWords = {};
 
     for (var key in this.currentDictionary) {
       if (this.currentDictionary.hasOwnProperty(key)) {
         let word = this.currentDictionary[key];
+
 
         let shouldInsertWord = false;
 
@@ -167,7 +184,9 @@ class Game {
         }
 
         // here means went thru word and all letters match
-        if (shouldInsertWord === true) filteredWords[key] = word;
+        if (shouldInsertWord === true) {
+          console.log('inserting word');
+          filteredWords[key] = word;}
       }
     }
 
@@ -184,7 +203,7 @@ class Game {
     for (let i = 0; i < this.wordLength; i++){
       let letter = this.responseWord[i];
 
-      if (letter !== '_' && !(this.lettersGuessed[letter])) lettersIdx.push(i);
+      if (letter === this.lastGuessedLetter) lettersIdx.push(i);
     }
 
     return lettersIdx;
@@ -192,8 +211,6 @@ class Game {
 
 
   updateFreqList(){
-    // if this.lastGuessedLetter === '' is empty, return
-
     // if currentDictionary is empty,
       // use Oxford List
       // assign isNewWord = true;
