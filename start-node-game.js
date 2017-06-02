@@ -76,26 +76,28 @@ class Game {
     this.lettersGuessed[this.lastGuessedLetter] = true;
     console.log('guessing letter:', this.lastGuessedLetter);
 
+    let that = this;
+
     request.post({url: this.url, formData: {char: this.lastGuessedLetter}},
-      // this.guessLetterCallback()
-      (error, response, body) => {
-        let data = JSON.parse(body);
-        if (data.error) console.log('guessing error:', data.error);
+      that.guessLetterCallback.bind(that));
+  }
 
-        console.log('response:', data);
+  guessLetterCallback(error, response, body) {
+    let data = JSON.parse(body);
+    if (data.error) console.log('guessing error:', data.error);
 
-        this.responseBody = data;
-        this.responseWord = data.word;
+    console.log('response:', data);
 
-        if (data.status === 'inactive') {
-          // BREAKS OUT OF FOR LOOP! :D
-          this.handleWord(data);
-        } else {
-          console.log("<------ guessing another letter ------>");
-          this.playRound();
-        }
-      }
-    );
+    this.responseBody = data;
+    this.responseWord = data.word;
+
+    if (data.status === 'inactive') {
+      // BREAKS OUT OF FOR LOOP! :D
+      this.handleWord(data);
+    } else {
+      console.log("<------ guessing another letter ------>");
+      this.playRound();
+    }
   }
 
   filterWords(){

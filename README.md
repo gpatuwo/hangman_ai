@@ -1,5 +1,13 @@
 # Hangman Solver
 NOTE: currently a brain dump. to-be edited
+- how to use
+- implementation
+  - high-level overview about what final product is doing, logical flow of how calls are made etc
+- details of letter guesser
+  - researching the approach
+  - implementation details
+- future improvement
+  - move to database
 
 ## Structure
 Server-side
