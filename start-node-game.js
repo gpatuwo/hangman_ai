@@ -1,8 +1,3 @@
-/*
-1. test if guessing logic works
-2. change out request for xmlHttpRequest
-*/
-
 'use strict';
 
 const request = require('request');
@@ -10,17 +5,7 @@ const fs = require('fs');
 const config = require('./config');
 const letterGuesser = require('./letter-guesser.js');
 
-class Game {
-  constructor() {
-    // this.everythng below
-    // let gameId, length, freqList, jsonDictionary, nextWordKey;
-    // let gameStatus = 'active', lettersGuessed = {}, guessesLeft = 10;
-  }
 
-  startGame(){
-    //
-  }
-}
 function startGame() {
 
   let gameId, length, freqList, jsonDictionary, nextWordKey;
