@@ -54,13 +54,13 @@ On a high level, the script makes an API call to get a new hangman word and uses
 The bulk of the logic of picking which letter to guess lies in these functions:
   - `filterWords()`: looks at the response from the `POST` request to figure out if it should alter the current dictionary hash and if so, then how it the dictionary needs to filtered.
 
-  If the letter that was just guessed is incorrect, then it filters **out** words in the dictionary that contain that letter via `filterOutWords()`.
+    If the letter that was just guessed is incorrect, then it filters **out** words in the dictionary that contain that letter via `filterOutWords()`.
 
-  If it is correct, then the Solver finds the indexes of where this letter is located on the Hangman word and, via `filterForWords()`, filters **for** words in the dictionary that contain the letter at those indexes.
+    If it is correct, then the Solver finds the indexes of where this letter is located on the Hangman word and, via `filterForWords()`, filters **for** words in the dictionary that contain the letter at those indexes.
 
   - `updateFreqList()`: figures out what the letter frequencies are in the current dictionary. If there are no words in the dictionary, the frequency list is assigned to the Oxford Dictionary's list. Otherwise, it  iterates through the current dictionary to create a hash count of the frequencies of each letter. It then outputs the letters in order from most common to least.
 
-  `updateFreqList()` also filters out any letters in the frequency list that has already been guessed before updating `freqList`
+    `updateFreqList()` also filters out any letters in the frequency list that has already been guessed before updating `freqList`
 
   - `playRound()`: invokes `filterWords` and `updateFreqList` to guess the first letter of the `freqList` via a post request. The callback of this request parses the response to figure out if it should keep playing or not via this conditional:
   ~~~~javascript
