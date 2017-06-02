@@ -12,6 +12,8 @@ const OxfordList = [ 'e', 'a', 'r', 'i', 'o', 't', 'n',
  's', 'l', 'c', 'u', 'd', 'p', 'm', 'h', 'g', 'b',
   'f', 'y', 'w', 'k', 'v', 'x', 'z', 'j', 'q' ];
 
+const wordSaver = require('./word-saver.js');
+
 module.exports = function letterGuesser(wordsHash, length,
    gameStatus, lettersGuessed, guessesLeft, url, i = 0) {
   console.log("<------ starting letterGuesser ------>");
@@ -116,13 +118,17 @@ function guessDownOxfordList(guessed, url, i = 0) {
 
       if (data.status === 'inactive') {
         // BREAKS OUT OF FOR LOOP! :D
-        // handleWord(data);
-        console.log('finished game');
+        wordSaver(data.msg, data.word);
       } else {
         console.log("making another post req");
         // not recursive bc it's happening asychroniously
         guessed[OxfordList[i]] = true;
-        request.post({url: url, formData: {char: OxfordList[++i]}}, cb);
+
+        while (guessed[OxfordList[i]]) {
+          i++;
+        }
+
+        request.post({url: url, formData: {char: OxfordList[i]}}, cb);
       }
     }
   );
