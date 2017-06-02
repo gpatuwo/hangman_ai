@@ -1,4 +1,5 @@
 # Hangman Solver
+NOTE: currently a brain dump. to-be edited
 
 ## Structure
 Server-side
