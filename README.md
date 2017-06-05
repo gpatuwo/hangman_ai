@@ -110,11 +110,20 @@ Playing Hangman IRL, you know to always start with the letter 'e.' I wanted to k
   solved: 24 | missed: 26 | total: 50 | success rate 48
   solved: 57 | missed: 43 | total: 100 | success rate 56.999
   solved: 77 | missed: 73 | total: 150 | success rate 51.333
-  __________________________________________________________________
   solved: 101 | missed: 99 | total: 200 | success rate 50.5
 
   at roughly 5.4 words/min
   ~~~~
+
+Tests for custom frequency list:
+~~~~
+solved: 32 | missed: 18 | total: 50 | success rate 64
+solved: 63 | missed: 37 | total: 100 | success rate 63
+solved: 96 | missed: 54 | total: 150 | success rate 64
+solved: 125 | missed: 75 | total: 200 | success rate 62.5
+solved: 159 | missed: 91 | total: 250 | success rate 63.6
+~~~~
+
 ## Future Improvements
 - Converting to MongoDB: The Solver currently uses JSON files as a pseudo database. With more time, it would be way better to use MongoDB to store the dictionaries. This would also allow for a fully dynamic frontend that's able to update the database with each new word.
 - Working with a linguist: Although not all the words given by the API were valid English words, the words did resemble combinations of valid English words (eg 'unexemptible' --> 'un' 'exempt' 'ible'). Collaboration with a linguist (or any word nerds... ;) would greatly illuminate what prefixes and suffixes are possible and where in the word to find those.

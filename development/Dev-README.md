@@ -1,5 +1,10 @@
 # Hangman Solver
 NOTE: currently a brain dump. to-be edited
+
+Frontend:
+- webpack great for managing dependencies, unnecessary for this project bc there's only one js file?
+- babel probably need bc written in es6
+
 - how to use
 - implementation
   - high-level overview about what final product is doing, logical flow of how calls are made etc
