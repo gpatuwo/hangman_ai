@@ -1,10 +1,5 @@
 'use strict';
 
-const request = require('request');
-const fs = require('fs');
-
-let solved = 0, missed = 0, total = 0;
-
 class Game {
   constructor(){
     this.gameId = '';
@@ -28,37 +23,58 @@ class Game {
   }
 
   setupGame(){
-    let email = 'hangman@gmail.com';
+    let email = 'hangman@gmail.com',
+        that = this,
+        xmlRequest = new XMLHttpRequest(),
+        formData = new FormData();
 
-    request.post({url: this.url, formData: {email: email}},
-      (error, response, body) => {
-      if (error) return console.log('post request error for new word:', error);
+    formData.append("email", "hangman@gmail.com");
 
-      console.log("<------ starting new game ------>");
+    xmlRequest.open("POST", this.url, true);
 
-      let data = JSON.parse(body);
-      this.responseBody = data;
-      this.responseWord = data.word;
-      this.gameId = data.gameId;
-      this.wordLength = data.word.length;
+    xmlRequest.onreadystatechange = () => {
+      if (xmlRequest.status === 201 &&
+        xmlRequest.readyState === XMLHttpRequest.DONE) {
+        this.requestWordResponse.bind(that)(xmlRequest);
+      } else if (xmlRequest.readyState === XMLHttpRequest.DONE
+        && xmlRequest.status !== 201){
+        console.log("oops xml request failed:", xmlRequest.response);
+      }
+    };
 
-      console.log('responseBody:', this.responseBody);
+    xmlRequest.send(formData);
+  }
 
-      this.jsonDictionary =
-        require(`./dictionary-json/${this.wordLength}-letter.json`);
-      this.nextWordKey = Object.keys(this.jsonDictionary).length;
+  requestWordResponse(xmlRequest){
+    let data = JSON.parse(xmlRequest.response);
+    this.responseBody = data;
+    this.responseWord = data.word;
+    this.gameId = data.gameId;
+    this.wordLength = data.word.length;
 
-      this.currentDictionary =
-       require(`./dictionary-json/${this.wordLength}-letter.json`);
-      this.updateFreqList();
+    // render responseWord
+    this.renderResponseWord();
 
-      console.log('initial freqList:', JSON.stringify(this.freqList));
+    this.jsonDictionary =
+      require(`./dictionary-json/${this.wordLength}-letter.json`);
+    this.nextWordKey = Object.keys(this.jsonDictionary).length;
 
-      this.url += `${this.gameId}/guesses`;
+    this.currentDictionary =
+     require(`./dictionary-json/${this.wordLength}-letter.json`);
 
-      console.log("<------ starting round ------>");
-      this.playRound();
-    });
+    this.updateFreqList();
+    // render freq list
+
+    // this.url += `${this.gameId}/guesses`;
+  }
+
+  renderResponseWord(){
+
+    let liSection = this.responseWord.split('').map( letter => {
+      return `<li>${letter}</li>`;
+    }).join('');
+
+    document.getElementById('response-word').innerHTML = liSection;
   }
 
   playRound(){
@@ -272,8 +288,6 @@ class Game {
 
     return countHash;
   }
-  /* runtime: O(n * m), where n = num of words in list, m = word length
-  space: O(1), always <= obj of length 26 */
 
 
   // figures out what to do w/word
@@ -287,46 +301,10 @@ class Game {
     let word = firstMsgWord === 'Congrats!' ?
       data.word : lastMsgWord;
 
-    if (firstMsgWord === 'Congrats!') {
-      solved++;
-      total++;
-    } else {
-      missed++;
-      total++;
-    }
-
-    console.log(`solved: ${solved} | missed: ${missed} | total: ${total} | success rate ${(solved / total)*100}`);
-
     if (this.isNewWord) {
-      console.log('this is a new word!!!');
-      this.saveWord(word);
+      console.log('save into dictionary');
     } else {
       console.log('yay this word was in my dictionary!');
     }
   }
-
-  saveWord(word){
-    // uses jsonDictionary and nextWordKey
-    // to push word to correct json length dict
-    let path = `./dictionary-json/${this.wordLength}-letter.json`;
-
-    let wordArr = word.split('');
-
-    this.jsonDictionary[this.nextWordKey] = wordArr;
-
-    let newDict = this.jsonDictionary;
-
-    fs.writeFile(path, JSON.stringify(newDict),
-      (err) => {
-        if (err) return console.log(err);
-
-        console.log(`${word} has been added to ${path}`);
-      });
-  }
 }
-
-function loopGame() {
-  new Game();
-}
-
-setInterval(loopGame, 10000);

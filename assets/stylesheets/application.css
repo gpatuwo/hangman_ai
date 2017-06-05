@@ -109,18 +109,18 @@ nav {
   font-size: 30px;
 }
 
-#next-letters {
+#freqList {
   font-size: 40px;
 }
 
-#hangman-word {
+#response-word {
   display: flex;
   color: white;
   font-size: 50px;
   justify-content: space-between;
 }
 
-#hangman-word li {
+#response-word li {
   border: 1px solid;
   padding: 5px;
 }

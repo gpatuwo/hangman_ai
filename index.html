@@ -6,7 +6,8 @@
 
     <link href="assets/stylesheets/application.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
-    <!-- <script type="text/javascript" src="assets/frontend/game.js"></script> -->
+    <script type="text/javascript" src="assets/frontend/entry.js"></script>
+    <script type="text/javascript" src="assets/frontend/game.js"></script>
   </head>
   <body>
     <div class="main">
@@ -21,9 +22,9 @@
           </div> to have the AI guess the next letter
         </div>
 
-        <div class="next-letters-container">
+        <div class="freqList-container">
           Next up:
-          <div id='next-letters'>
+          <div id='freqList'>
             <!-- A, E, T, O, I -->
           </div>
         </div>
@@ -45,8 +46,8 @@
           </div>
         </nav>
 
-        <div class="hangman-word-container">
-          <ul id='hangman-word'>
+        <div class="response-word-container">
+          <ul id='response-word'>
             <!-- <li>T</li>
             <li>E</li>
             <li>S</li>
