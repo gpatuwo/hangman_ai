@@ -1,7 +1,7 @@
 'use strict';
 
-// const request = require('request');
-// const fs = require('fs');
+const request = require('request');
+const fs = require('fs');
 
 let solved = 0, missed = 0, total = 0;
 

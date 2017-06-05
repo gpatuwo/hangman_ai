@@ -1,10 +1,5 @@
 /* Reset */
 
-/* http://meyerweb.com/eric/tools/css/reset/
-   v2.0 | 20110126
-   License: none (public domain)
-*/
-
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -24,6 +19,14 @@ time, mark, audio, video {
     font-size: 100%;
     font: inherit;
     vertical-align: baseline;
+    font-family: 'Roboto', sans-serif;
+    list-style: none;
+}
+
+img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 body {
@@ -31,9 +34,98 @@ body {
 }
 
 .main {
-  max-width: 800px;
+  margin-left: 7%;
+  margin-right: 7%;
+  margin-top: 4%;
+  display: flex;
+  display: -webkit-flex;
 }
 
-header {
-  /*display: flex;*/
+.left {
+  width: 25%;
+  font-size: 25px;
+  color: white;
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  -webkit-flex-direction: column;
+  justify-content: space-between;
+  -webkit-justify-content: space-between;
+}
+
+.right {
+  width: 70%;
+  margin-left: 6%;
+  color: #ff3333;
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  -webkit-flex-direction: column;
+  justify-content: space-between;
+  -webkit-justify-content: space-between;
+}
+
+nav {
+  display: flex;
+  display: -webkit-flex;
+  margin-top: 6%;
+  font-size: 25px;
+}
+
+.nav{
+  cursor: pointer;
+  margin-right: 6%;
+}
+
+.guesses {
+  margin-left: auto;
+  width: 80px;
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  -webkit-flex-direction: column;
+  align-items: flex-end;
+}
+
+.guesses-num {
+  font-size: 60px;
+  line-height: 50px;
+}
+
+.guesses-txt {
+  text-align: right;
+}
+
+.press-a {
+  margin: 20% 0;
+}
+
+.a-key{
+  width: 35px;
+  display: inline-block;
+}
+
+.next-letters-container {
+  font-size: 30px;
+}
+
+#next-letters {
+  font-size: 40px;
+}
+
+#hangman-word {
+  display: flex;
+  color: white;
+  font-size: 50px;
+  justify-content: space-between;
+}
+
+#hangman-word li {
+  border: 1px solid;
+  padding: 5px;
+}
+
+#guessed-letters {
+  font-size: 40px;
+  text-decoration: line-through;
 }
