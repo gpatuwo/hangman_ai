@@ -122,6 +122,7 @@ solved: 63 | missed: 37 | total: 100 | success rate 63
 solved: 96 | missed: 54 | total: 150 | success rate 64
 solved: 125 | missed: 75 | total: 200 | success rate 62.5
 solved: 159 | missed: 91 | total: 250 | success rate 63.6
+solved: 187 | missed: 113 | total: 300 | success rate 62.33333333333333
 ~~~~
 
 ## Future Improvements
