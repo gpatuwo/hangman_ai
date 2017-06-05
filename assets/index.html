@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Ay Ai Hangman!</title>
+
+    <link href="stylesheets/application.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
+    <!-- <script type="text/javascript" src="bundle.js"></script> -->
+    <script type="text/javascript" src='frontend/entry.js'></script>
+    <script type="text/javascript" src='frontend/game.js'></script>
+    <script type="text/javascript" src='dictionary-json/1-letter.json.js'>
+
+    </script>
+
+
+  </head>
+  <body>
+    <div class="main">
+      <section class='left'>
+        <div class="logo">
+          <img src="images/Hangman_logo-02-crop.png" alt="Ay Ai Hangman Logo">
+        </div>
+
+        <div class="press-a">
+          Press <div class="a-key">
+            <img src="images/Hangman_A-key-03.png" alt="A-key">
+          </div> to have the AI guess the next letter
+        </div>
+
+        <div class="freqList-container">
+          Next up:
+          <div id='freqList'>
+            <!-- A, E, T, O, I -->
+          </div>
+        </div>
+      </section>
+      <section class='right'>
+        <nav>
+          <div class='nav' id='new-game'>New Game</div>
+          <div class='nav'>
+            What is this?
+          </div>
+
+          <div class="guesses">
+            <div id="guesses-num">
+              <!-- 10 -->
+            </div>
+            <div class="guesses-txt">
+              Guesses left
+            </div>
+          </div>
+        </nav>
+
+        <div class="response-word-container">
+          <ul id='response-word'>
+            <!-- <li>T</li>
+            <li>E</li>
+            <li>S</li>
+            <li>T</li>
+            <li>T</li>
+            <li>E</li>
+            <li>S</li>
+            <li>T</li>
+            <li>T</li>
+            <li>E</li>
+            <li>S</li>
+            <li>T</li>
+            <li>T</li>
+            <li>E</li>
+            <li>S</li>
+            <li>T</li> -->
+          </ul>
+        </div>
+
+        <div id="guessed-letters">
+          <!-- ASDFASDF -->
+        </div>
+      </section>
+
+    </div>
+  </body>
+</html>

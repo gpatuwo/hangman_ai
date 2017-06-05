@@ -1,11 +1,11 @@
 'use strict';
 
+// const request = require('request');
+
 class Game {
   constructor(){
     this.gameId = '';
     this.wordLength = 0;
-    this.jsonDictionary = {};
-    this.nextWordKey = '';
     this.isNewWord = false;
     this.gameStatus = 'active';
     this.lettersGuessed = {};
@@ -18,8 +18,6 @@ class Game {
     this.lastGuessedLetter = '';
     this.responseBody = {};
     this.responseWord = '';
-
-    this.setupGame();
   }
 
   setupGame(){
@@ -54,18 +52,24 @@ class Game {
 
     // render responseWord
     this.renderResponseWord();
+    this.renderGuessesNum();
 
-    this.jsonDictionary =
-      require(`./dictionary-json/${this.wordLength}-letter.json`);
-    this.nextWordKey = Object.keys(this.jsonDictionary).length;
+    // load json file
+    // let head = document.getElementsByTagName('head');
+    // let jsonScript = "<script type='text/javascript' src='/dictionary-json/";
+    // jsonScript += `${this.wordLength}-letter.json'></script>`;
+    //
+    // head.appendChild(jsonScript);
 
-    this.currentDictionary =
-     require(`./dictionary-json/${this.wordLength}-letter.json`);
+    this.currentDictionary = jsonDict; 
+    console.log(this.currentDictionary);
 
     this.updateFreqList();
     // render freq list
 
     // this.url += `${this.gameId}/guesses`;
+
+    // enable even listener for A key
   }
 
   renderResponseWord(){
@@ -75,6 +79,11 @@ class Game {
     }).join('');
 
     document.getElementById('response-word').innerHTML = liSection;
+  }
+
+  renderGuessesNum(){
+    document.getElementById('guesses-num').innerHTML =
+     this.responseBody.guessesLeft;
   }
 
   playRound(){
@@ -308,3 +317,5 @@ class Game {
     }
   }
 }
+
+// module.exports = Game;
