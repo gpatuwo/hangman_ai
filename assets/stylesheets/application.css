@@ -87,7 +87,7 @@ nav {
   align-items: flex-end;
 }
 
-.guesses-num {
+#guesses-num {
   font-size: 60px;
   line-height: 50px;
 }
