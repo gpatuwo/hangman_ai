@@ -54,22 +54,44 @@ class Game {
     this.renderResponseWord();
     this.renderGuessesNum();
 
+    let that = this;
     // load json file
-    // let head = document.getElementsByTagName('head');
-    // let jsonScript = "<script type='text/javascript' src='/dictionary-json/";
-    // jsonScript += `${this.wordLength}-letter.json'></script>`;
+    // let script = document.createElement("script");
     //
-    // head.appendChild(jsonScript);
+    // script.onload = function (jsonData) {
+    //     //do stuff with the script
+    //     this.currentDictionary = jsonData;
+    //     console.log(this.currentDictionary);
+    //
+    //     this.updateFreqList.bind(that)();
+    // };
+    let path = `../dictionary-json/${this.wordLength}-letter.json`;
+    // document.head.appendChild(script);
 
-    this.currentDictionary = jsonDict; 
+    this.currentDictionary = require(path);
     console.log(this.currentDictionary);
-
-    this.updateFreqList();
+      // this.readJsonDict(path, text => {
+    //   console.log(text);
+    // });
+    //from loading json/js dict in head
     // render freq list
 
     // this.url += `${this.gameId}/guesses`;
 
     // enable even listener for A key
+  }
+
+  readJsonDict(file, cb) {
+    let rawFile = new XMLHttpRequest();
+    rawFile.overrideMimeType("application/json");
+    rawFile.open("GET", file, true);
+    rawFile.onreadystatechange = function() {
+        if (rawFile.readyState === 4 && rawFile.status == "200") {
+            cb(rawFile.responseText);
+        }
+    };
+
+    rawFile.send(null);
   }
 
   renderResponseWord(){
@@ -318,4 +340,4 @@ class Game {
   }
 }
 
-// module.exports = Game;
+module.exports = Game;

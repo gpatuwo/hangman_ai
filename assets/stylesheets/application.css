@@ -118,11 +118,13 @@ nav {
   color: white;
   font-size: 50px;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 #response-word li {
   border: 1px solid;
-  padding: 5px;
+  padding: 2%;
+    margin: 0 2% 2% 0;
 }
 
 #guessed-letters {
