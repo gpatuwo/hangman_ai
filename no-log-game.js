@@ -1,3 +1,4 @@
+// clean code with no console logs
 'use strict';
 
 const request = require('request');
@@ -34,15 +35,12 @@ class Game {
       (error, response, body) => {
       if (error) return console.log('post request error for new word:', error);
 
-      console.log("<------ starting new game ------>");
 
       let data = JSON.parse(body);
       this.responseBody = data;
       this.responseWord = data.word;
       this.gameId = data.gameId;
       this.wordLength = data.word.length;
-
-      console.log('responseBody:', this.responseBody);
 
       this.jsonDictionary =
         require(`./dictionary-json/${this.wordLength}-letter.json`);
@@ -52,11 +50,8 @@ class Game {
        require(`./dictionary-json/${this.wordLength}-letter.json`);
       this.updateFreqList();
 
-      console.log('initial freqList:', JSON.stringify(this.freqList));
-
       this.url += `${this.gameId}/guesses`;
 
-      console.log("<------ starting round ------>");
       this.playRound();
     });
   }
@@ -68,26 +63,22 @@ class Game {
 
     // updateFreqList
     this.updateFreqList();
-    console.log('updated freqList:', JSON.stringify(this.freqList));
 
     this.firstGuess = false;
 
     // last letter guessed = freqList[0];
     this.lastGuessedLetter = this.freqList[0];
     this.lettersGuessed[this.lastGuessedLetter] = true;
-    console.log('guessing letter:', this.lastGuessedLetter);
 
     let that = this;
 
     request.post({url: this.url, formData: {char: this.lastGuessedLetter}},
-      this.guessLetterCallback.bind(that));
+      that.guessLetterCallback.bind(that));
   }
 
   guessLetterCallback(error, response, body) {
     let data = JSON.parse(body);
     if (data.error) console.log('guessing error:', data.error);
-
-    console.log('response:', data);
 
     this.responseBody = data;
     this.responseWord = data.word;
@@ -96,7 +87,6 @@ class Game {
       // BREAKS OUT OF FOR LOOP! :D
       this.handleWord(data);
     } else {
-      console.log("<------ guessing another letter ------>");
       this.playRound();
     }
   }
@@ -107,46 +97,34 @@ class Game {
     let didWrongGuess = this.didWrongGuess();
     this.guessesLeftBeforeRequest = this.responseBody.guessesLeft;
 
-    if (dictionaryLength <= 5) {
-      console.log('dict before filtering:', this.currentDictionary);
-    } else {
-      console.log('dict length before filtering:', dictionaryLength);
-    }
     // if it's the first guess
     if (this.firstGuess) {
-      console.log('first guess');
       return;
     }
 
-
     // if no words in dict match
     if (dictionaryLength === 0) {
-      console.log('no words in dict match');
       return;
     }
 
     // if there's one word and guessed a letter that didn't work,
     if (dictionaryLength === 1 && didWrongGuess) {
-      console.log("if there's one word and guessed a letter that didn't work");
       this.currentDictionary = {};
       return;
     }
 
-    console.log('filtering Words');
-    console.log('didWrongGuess:', didWrongGuess);
 
     if (didWrongGuess) {
       this.filterOutWords();
     } else {
       let newlettersIdx = this.findNewLettersIdx();
-      console.log('newlettersIdx:', newlettersIdx);
+
       this.filterForWords(newlettersIdx);
     }
   }
 
   // GET RID of words that do have lastGuessedLetter
   filterOutWords(){
-    console.log("<------ filterOutWords ------>");
     let filteredWords = {};
 
     for (var key in this.currentDictionary){
@@ -165,7 +143,6 @@ class Game {
 
   // KEEP words that do have lastGuessedLetter in newlettersIdx
   filterForWords(newlettersIdx){
-    console.log("<------ filterForWords ------>");
     let filteredWords = {};
 
     for (var key in this.currentDictionary) {
@@ -278,8 +255,6 @@ class Game {
 
   // figures out what to do w/word
   handleWord(data){
-    console.log("<------ handling word ------>");
-
     // figure out what the word is
     let firstMsgWord = data.msg.split(" ").shift();
     let lastMsgWord = data.msg.split(" ").pop();
@@ -295,11 +270,8 @@ class Game {
       total++;
     }
 
-    console.log(`solved: ${solved} | missed: ${missed} | total: ${total} | success rate ${(solved / total)*100}`);
-
     if (this.isNewWord) {
-      console.log('this is a new word!!!');
-      this.saveWord(word);
+      // this.saveWord(word);
     } else {
       console.log('yay this word was in my dictionary!');
     }
