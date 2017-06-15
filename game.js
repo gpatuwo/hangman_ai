@@ -46,7 +46,8 @@ class Game {
 
       this.jsonDictionary =
         require(`./dictionary-json/${this.wordLength}-letter.json`);
-      this.nextWordKey = Object.keys(this.jsonDictionary).length;
+      // this.nextWordKey = Object.keys(this.jsonDictionary).length;
+        // micro optimized in updateFreqList
 
       this.currentDictionary =
        require(`./dictionary-json/${this.wordLength}-letter.json`);
@@ -221,6 +222,9 @@ class Game {
     let frequencyList;
     let dictionaryLength = Object.keys(this.currentDictionary).length;
 
+    // if it's first time then assign
+    if (!this.nextWordKey) this.nextWordKey = dictionaryLength;
+
     const OxfordList = [ 'e', 'a', 'r', 'i', 'o', 't', 'n', 's', 'l', 'c',
      'u', 'd', 'p', 'm', 'h', 'g', 'b', 'f', 'y', 'w', 'k', 'v', 'x', 'z',
       'j', 'q' ];
@@ -287,6 +291,7 @@ class Game {
     let word = firstMsgWord === 'Congrats!' ?
       data.word : lastMsgWord;
 
+    // purely for keeping track of record
     if (firstMsgWord === 'Congrats!') {
       solved++;
       total++;
